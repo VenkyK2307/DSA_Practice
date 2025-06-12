@@ -105,6 +105,14 @@ public class greedy {
 
     }
 
+    public static int AggressiveCows(int nums[], int target) {
+
+    }
+
+    public static int FractionalKnapSack(int weights[], int value[], int W) {
+
+    }
+
     public static void main(String[] args) {
 
         // int amount = 784;

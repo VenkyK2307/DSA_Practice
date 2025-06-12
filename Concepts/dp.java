@@ -497,7 +497,159 @@ public class dp {
 
     }
 
-    // public static int UniquePathsII(int[][] matrix) {
+    public static int NcR(int n, int r) {
+        // Variataion of pascal triangle
+
+        int[][] dp = new int[n + 1][r + 1];
+
+        for (int i = 0; i <= n; i++) {
+            for (int j = 0; j <= Math.min(i, r); j++) {
+                if (j == 0 || j == i) {
+                    dp[i][j] = 1;
+                } else {
+                    dp[i][j] = dp[i - 1][j - 1] + dp[i - 1][j];
+                }
+            }
+
+        }
+        return dp[n][r];
+
+    }
+
+    public static int UniquePathswithObstacle(int[][] matrix) {
+
+        int n = matrix.length;
+        int m = matrix[0].length;
+
+        int dp[][] = new int[n][m];
+
+        for (int i = 0; i < n; i++) {
+            if (matrix[i][0] == 1)
+                break;
+            dp[i][0] = 1;
+        }
+        for (int j = 0; j < m; j++) {
+            if (matrix[0][j] == 1)
+                break;
+            dp[0][j] = 1;
+        }
+
+        for (int i = 1; i < n; i++) {
+            for (int j = 1; j < m; j++) {
+                if (matrix[i][j] == 1) {
+                    dp[i][j] = 0;
+                } else {
+                    dp[i][j] = dp[i - 1][j] + dp[i][j - 1];
+                }
+            }
+        }
+        for (int i = 0; i < dp.length; i++) {
+            for (int j = 0; j < dp[0].length; j++) {
+                System.out.print(dp[i][j] + " ");
+            }
+            System.out.println();
+        }
+        return dp[n - 1][m - 1];
+
+    }
+
+    public static int CoinGame(int nums[]) {
+        int n = nums.length;
+
+        int dp[][] = new int[n][n];
+
+        for (int length = 1; length <= n; length++) {
+            for (int i = 0; i <= n - length; i++) {
+                int j = i + length - 1;
+
+                if (i == j) {
+                    dp[i][j] = nums[i];
+                }
+
+                else if (j == i + 1) {
+                    dp[i][j] = Math.max(nums[i], nums[j]);
+
+                }
+
+                else {
+                    dp[i][j] = Math.max(nums[i] + Math.min(dp[i + 2][j], dp[i + 1][j - 1]),
+                            nums[j] + Math.min(dp[i + 1][j - 1], dp[i][j - 2]));
+                }
+
+            }
+
+        }
+
+        for (int i = 0; i < dp.length; i++) {
+            for (int j = 0; j < dp[0].length; j++) {
+                System.out.print(dp[i][j] + " ");
+            }
+            System.out.println();
+        }
+
+        return dp[0][n - 1];
+
+    }
+
+    public static int BuyandSellStock(int nums[]) {
+
+        int n = nums.length;
+        int[][] dp = new int[n][2];
+
+        dp[0][0] = 0;
+        dp[0][1] = -nums[0];
+
+        for (int i = 1; i < nums.length; i++) {
+            dp[i][0] = Math.max(dp[i - 1][0], dp[i - 1][1] + nums[i]);
+            dp[i][1] = Math.max(dp[i - 1][1], -nums[i]);
+        }
+
+        System.out.println("Only 1 buy and 1 sell");
+
+        for (int i = 0; i < dp.length; i++) {
+            System.out.print(nums[i] + " -> ");
+            for (int j = 0; j < dp[0].length; j++) {
+                System.out.print(dp[i][j] + " ");
+            }
+            System.out.println();
+        }
+
+        return dp[n - 1][0];
+
+    }
+
+    public static int BuyandSellStockII(int nums[]) {
+        int n = nums.length;
+        int[][] dp = new int[n][2];
+
+        dp[0][0] = 0;
+        dp[0][1] = -nums[0];
+
+        for (int i = 1; i < n; i++) {
+            dp[i][0] = Math.max(dp[i - 1][0], dp[i - 1][1] + nums[i]);
+            dp[i][1] = Math.max(dp[i - 1][1], dp[i - 1][0] - nums[i]);
+        }
+
+        for (int i = 0; i < dp.length; i++) {
+            System.out.print(nums[i] + " -> ");
+            for (int j = 0; j < dp[0].length; j++) {
+                System.out.print(dp[i][j] + " ");
+            }
+            System.out.println();
+        }
+
+        return dp[n - 1][0];
+
+    }
+
+    // public static int BuyandSellStockIII(int nums[]) {
+
+    // }
+
+    // public static int BuyandSellStockIV(int nums[]) {
+
+    // }
+    // public static int HouseRobberII(int nums[]) {
 
     // }
 
@@ -565,7 +717,32 @@ public class dp {
         // int n = 1000;
         // System.out.println("Total No. of Primes : " + CountingPrimes(n));
 
-        System.out.println(PascalTriangle(7));
+        // int n = 9;
+        // System.out.println(PascalTriangle(n));
+
+        // int n = 5;
+        // int r = 2;
+        // System.out.println(NcR(n, r));
+
+        // int[][] matrix = {
+        // { 0, 0, 1, 0, 0, 0, 0, 0, 0 },
+        // { 1, 1, 1, 1, 1, 1, 1, 1, 0 },
+        // { 0, 0, 0, 0, 0, 0, 0, 1, 0 },
+        // { 1, 1, 1, 1, 1, 1, 0, 1, 0 },
+        // { 0, 0, 0, 0, 0, 1, 0, 0, 0 },
+        // { 0, 1, 1, 1, 0, 1, 0, 1, 0 },
+        // { 0, 0, 0, 0, 0, 0, 0, 0, 0 }
+        // };
+        // System.out.println(UniquePathswithObstacle(matrix));
+
+        // int nums[] = { 3, 9, 1, 2, 7, 5, 6, 4, 8, 10 };
+        // System.out.println("The minimum a Winner could get : " + CoinGame(nums));
+
+        // int nums[] = { 7, 1, 5, 3, 6, 4 };
+        // System.out.println(BuyandSellStock(nums));
+
+        // int nums[] = { 7, 1, 5, 3, 6, 4 };
+        // System.out.println(BuyandSellStockII(nums));
 
     }
 }

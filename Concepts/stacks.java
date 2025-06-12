@@ -25,6 +25,7 @@ public class stacks {
     }
 
     public static int[] StockSpan(int nums[]) {
+        // How many days before stock has lower price;
         Stack<Integer> stack = new Stack<>();
         int[] span = new int[nums.length];
 
@@ -44,9 +45,42 @@ public class stacks {
 
     }
 
-    // public static int AstroidCollision(int nums[]) {
+    public static int[] AstroidCollision(int nums[]) {
 
-    // }
+        Stack<Integer> stack = new Stack<>();
+
+        for (int ast : nums) {
+
+            boolean destroyed = false;
+
+            while (!stack.isEmpty() && ast < 0 && stack.peek() > 0) {
+                if (Math.abs(ast) > stack.peek()) {
+                    stack.pop();
+                }
+
+                else if (Math.abs(ast) == stack.peek()) {
+                    stack.pop();
+                    destroyed = true;
+                    break;
+                } else {
+                    destroyed = true;
+                    break;
+                }
+            }
+
+            if (!destroyed) {
+                stack.push(ast);
+            }
+
+        }
+
+        int[] result = new int[stack.size()];
+        for (int i = result.length - 1; i >= 0; i--) {
+            result[i] = stack.get(i);
+        }
+        return result;
+
+    }
 
     public static boolean ValidParanthesis(String str) {
 
@@ -99,13 +133,40 @@ public class stacks {
 
     }
 
+    public static int[] DailyTemperatutres(int nums[]) {
+
+        // Hou many days we have to wait to see a Warmer temperatue;
+        Stack<Integer> stack = new Stack<>();
+
+        int n = nums.length;
+
+        int[] result = new int[n];
+
+        for (int i = n - 1; i >= 0; i--) {
+
+            while (!stack.isEmpty() && nums[i] > nums[stack.peek()]) {
+                stack.pop();
+
+            }
+
+            result[i] = (!stack.isEmpty()) ? stack.peek() - i : 0;
+
+            stack.push(i);
+        }
+        return result;
+    }
+
     public static void main(String[] args) {
 
         // int nums[] = { 3, 4, 2, 5, 7, 4, 8, 4, 2 };
         // int result[] = NextGreaterRight(nums);
         // System.out.println(Arrays.toString(result));
 
-        // int[] astroids = { 10, 15, 17 };
+        // int nums[] = { 90, 100, 60, 70, 60, 80, 100 };
+        // int[] res = StockSpan(nums);
+        // System.out.println(Arrays.toString(res));
+
+        // int[] astroids = { 6, 4, -2, -8, 4, 5, 6, -9 };
         // int[] ast = AstroidCollision(astroids);
         // System.out.println(Arrays.toString(ast));
 
@@ -115,9 +176,9 @@ public class stacks {
         // String str = "malaylam";
         // System.out.println(ValidPalindrome(str));
 
-        // int nums[] = { 90, 100, 60, 70, 60, 80, 100 };
-        // int[] res = StockSpan(nums);
-        // System.out.println(Arrays.toString(res));
+        // int nums[] = { 73, 74, 75, 71, 69, 72, 76, 73 };
+        // int[] result = DailyTemperatutres(nums);
+        // System.out.println(Arrays.toString(result));
 
     }
 
