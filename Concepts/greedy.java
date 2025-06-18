@@ -1,6 +1,17 @@
 import java.util.*;
 
-public class greedy {
+class greedy {
+
+    static class Item {
+        int value;
+        int weight;
+
+        Item(int value, int weight) {
+            this.value = value;
+            this.weight = weight;
+
+        }
+    }
 
     public static boolean lemonadeChange(int[] coins) {
 
@@ -105,21 +116,39 @@ public class greedy {
 
     }
 
-    public static int AggressiveCows(int nums[], int target) {
+    public static double FractionalKnapSack(Item[] items, int W) {
+
+        double maxvalue = 0.0;
+        Arrays.sort(items, (a, b) -> Double.compare((double) (b.value / b.weight), (double) (a.value / a.weight)));
+
+        for (Item item : items) {
+            if (W == 0)
+                break;
+
+            if (item.weight < W) {
+                maxvalue = maxvalue + item.value;
+                W -= item.weight;
+            } else {
+                maxvalue += ((double) item.value / item.weight) * W;
+                W = 0;
+            }
+
+        }
+        return maxvalue;
 
     }
 
-    public static int FractionalKnapSack(int weights[], int value[], int W) {
+    // public static int AggressiveCows(int nums[], int target) {
 
-    }
+    // }
 
     public static void main(String[] args) {
 
-        // int amount = 784;
-        // System.out.println("No.of Denominations : " + IndianCoins(amount));
-
         // int coins[] = { 5, 5, 10, 10, 20 };
         // System.out.println(lemonadeChange(coins));
+
+        // int amount = 784;
+        // System.out.println("No.of Denominations : " + IndianCoins(amount));
 
         // int coins[] = { 1, 3, 5 };
         // int sum = 8;
@@ -128,6 +157,16 @@ public class greedy {
         // int coins[] = { 1, 3, 5 };
         // int amount = 11;
         // System.out.println(MinCoinChange(coins, amount));
+
+        // Item[] items = {
+        // new Item(64, 11),
+        // new Item(176, 23),
+        // new Item(145, 28)
+        // };
+        // int W = 61;
+
+        // double max = FractionalKnapSack(items, W);
+        // System.out.println(max);
 
     }
 

@@ -1229,6 +1229,123 @@ public class arrays {
 
     }
 
+    public static int[] DequeueSlidingWindowMaximum(int nums[], int k) {
+
+        int n = nums.length;
+        int result[] = new int[n - k + 1];
+
+        // check SW, check values , push Index , push to array
+
+        Deque<Integer> dq = new ArrayDeque<>();
+
+        for (int i = 0; i < n; i++) {
+
+            if (!dq.isEmpty() && dq.peekFirst() <= i - k) {
+                dq.pollFirst();
+            }
+            while (!dq.isEmpty() && nums[dq.peekLast()] < nums[i]) {
+                dq.pollLast();
+            }
+
+            dq.offerLast(i);
+
+            if (i >= k - 1) {
+                result[i - k + 1] = nums[dq.peekFirst()];
+
+            }
+        }
+
+        return result;
+
+    }
+
+    public static String IntegerToRoman(int num) {
+
+        LinkedHashMap<Integer, String> romanMap = new LinkedHashMap<>();
+
+        romanMap.put(1000, "M");
+        romanMap.put(900, "CM");
+        romanMap.put(500, "D");
+        romanMap.put(400, "CD");
+        romanMap.put(100, "C");
+        romanMap.put(90, "XC");
+        romanMap.put(50, "L");
+        romanMap.put(40, "XL");
+        romanMap.put(10, "X");
+        romanMap.put(9, "IX");
+        romanMap.put(5, "V");
+        romanMap.put(4, "IV");
+        romanMap.put(1, "I");
+
+        StringBuilder sb = new StringBuilder();
+
+        for (Map.Entry<Integer, String> entry : romanMap.entrySet()) {
+            int amount = entry.getKey();
+            String symbol = entry.getValue();
+
+            while (num >= amount) {
+                sb.append(symbol);
+                num -= amount;
+            }
+
+        }
+
+        return sb.toString();
+    }
+
+    public static int LongestIncreaingSubsequence(int nums[]) {
+
+        List<Integer> list = new ArrayList<>();
+        for (int num : nums) {
+
+            int index = Collections.binarySearch(list, num);
+
+            if (index < 0) {
+                index = -(index + 1);
+            }
+
+            if (index == list.size()) {
+                list.add(num);
+            } else {
+                list.set(index, num);
+            }
+
+        }
+
+        for (int num : list) {
+            System.out.print(num + " ");
+        }
+        System.out.println();
+
+        return list.size();
+
+    }
+
+    // Sorted and split at i
+    public static boolean CanSplitintoTwoEqualArrays(int nums[]) {
+
+        int total = 0;
+
+        for (int num : nums) {
+            total += num;
+
+        }
+        int left = 0;
+        for (int i = 0; i < nums.length; i++) {
+            left += nums[i];
+
+            int right = total - left;
+
+            if (left == right) {
+                System.out.println("Split at index : " + i);
+                return true;
+
+            }
+
+        }
+        return false;
+    }
+
     // public static int MaxsizeRectangle(int[][] matrix) {
 
     // }
@@ -1455,6 +1572,20 @@ public class arrays {
 
         // int nums[] = { 1, -1, 2, -2, 3, -3, 5 };
         // System.out.println(LargestSubArraywith0Sum(nums));
+
+        // int nums[] = { 1, 3, -1, -3, 5, 3, 6, 7 };
+        // int k = 3;
+        // int arr[] = DequeueSlidingWindowMaximum(nums, k);
+        // System.out.println(Arrays.toString(arr));
+
+        // int num = 1994;
+        // System.out.println(IntegerToRoman(num));
+
+        // int nums[] = { 10, 9, 2, 5, 3, 7, 101, 18, 23, 45, 7, 67 };
+        // System.out.println(LongestIncreaingSubsequence(nums));
+
+        // int nums[] = { 1, 2, 3, 7 };
+        // System.out.println(CanSplitintoTwoEqualArrays(nums));
 
     }
 

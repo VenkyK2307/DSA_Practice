@@ -32,40 +32,9 @@ public class recursion {
 
     }
 
-    public static class NQueens {
+    // public static char[][] NQueens(int[][] board){
 
-        public static char[][] NQueens(int n) {
-
-            char[][] board = new char[n][n];
-
-            for (int i = 0; i < board.length; i++) {
-                for (int j = 0; j < board[0].length; j++) {
-                    board[i][j] = 'X';
-                }
-            }
-
-            return board;
-        }
-
-        public static void PrintBoard(char[][] board) {
-
-            for (int i = 0; i < board.length; i++) {
-                for (int j = 0; j < board[0].length; j++) {
-                    System.out.print(board[i][j] + " ");
-                }
-                System.out.println();
-            }
-
-        }
-
-        public static void main(String[] args) {
-            int n = 4;
-            char[][] chess = NQueens(n);
-            PrintBoard(chess);
-            System.out.println("Print chess Board");
-        }
-
-    }
+    // }
 
     public static void main(String[] args) {
 
