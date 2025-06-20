@@ -173,6 +173,26 @@ public class strings {
 
     }
 
+    public static String RemovesameConsecutiveChars(String str) {
+
+        Stack<Character> stack = new Stack<>();
+
+        for (int i = 0; i < str.length(); i++) {
+            char curr = str.charAt(i);
+
+            if (!stack.isEmpty() && curr == stack.peek()) {
+                stack.pop();
+            }
+            stack.push(curr);
+        }
+        StringBuilder sb = new StringBuilder();
+
+        for (char letter : stack) {
+            sb.append(letter);
+        }
+        return sb.toString();
+
+    }
     // public static String MinimumWinowSubstring(String str1, String str2) {
 
     // }
@@ -206,8 +226,11 @@ public class strings {
         // int length = LongestLengthofSubstringWithoutRepeatingCharecters(str);
         // System.out.println(length);
 
-        String str = "rrwiAAAn";
-        System.out.println(SortWords(str));
+        // String str = "rrwiAAAn";
+        // System.out.println(SortWords(str));
+
+        // String str = "aabccdeeffd";
+        // System.out.println(RemovesameConsecutiveChars(str));
 
     }
 

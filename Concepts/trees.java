@@ -417,6 +417,20 @@ class trees {
     }
 
     public static void main(String[] args) {
+
+        /*
+         * Visualisation of the tree in real world
+         * 1
+         * / \
+         * 2 3
+         * / \ / \
+         * 4 5 6 7
+         * / \ / \ / \ / \
+         * 8 9 10 11 12 13 14 15
+         * /
+         * 16
+         * 
+         */
         TreeNode root = new TreeNode(1);
         root.left = new TreeNode(2);
         root.right = new TreeNode(3);
@@ -485,7 +499,7 @@ class trees {
 
         // System.out.println(hasPath(root, 11));
 
-        DiagonalTraversal(root);
+        // DiagonalTraversal(root);
 
     }
 

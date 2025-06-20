@@ -1346,9 +1346,193 @@ public class arrays {
         return false;
     }
 
-    // public static int MaxsizeRectangle(int[][] matrix) {
+    public static int HouseRobberII(int nums[]) {
+        int n = nums.length;
 
-    // }
+        if (n == 0)
+            return 0;
+        if (n == 1)
+            return nums[0];
+        if (n == 2)
+            return Math.max(nums[0], nums[1]);
+
+        // Step-1 0 to n-1;
+
+        int dp1[] = new int[n];
+
+        dp1[0] = nums[0];
+        dp1[1] = Math.max(nums[0], nums[1]);
+
+        for (int i = 2; i < n - 1; i++) {
+            dp1[i] = Math.max(dp1[i - 1], dp1[i - 2] + nums[i]);
+        }
+
+        // STEP-2 1 to n
+
+        int dp2[] = new int[n];
+
+        dp2[1] = nums[1];
+        dp2[2] = Math.max(nums[1], nums[2]);
+
+        for (int i = 3; i < n; i++) {
+            dp2[i] = Math.max(dp2[i - 1], dp2[i - 2] + nums[i]);
+        }
+
+        return Math.max(dp1[n - 2], dp2[n - 1]);
+
+    }
+
+    public static int longestConsecutiveSubsequence(int nums[]) {
+
+        HashSet<Integer> set = new HashSet<>();
+        int longest = 0;
+
+        for (int num : nums) {
+            set.add(num);
+        }
+
+        for (int num : set) {
+
+            if (!set.contains(num - 1)) {
+
+                int curr = num;
+                int count = 1;
+
+                while (set.contains(curr + 1)) {
+                    curr++;
+                    count++;
+                }
+
+                longest = Math.max(longest, count);
+
+            }
+
+        }
+        return longest;
+
+    }
+
+    public static int CandyProblam(int nums[]) {
+
+        int n = nums.length;
+        int res[] = new int[n];
+        Arrays.fill(res, 1);
+
+        // Forward Pass
+        for (int i = 1; i < n; i++) {
+            if (nums[i] > nums[i - 1]) {
+                res[i] = res[i - 1] + 1;
+            }
+        }
+
+        // BackWardPass
+        for (int i = n - 2; i >= 0; i--) {
+            if (nums[i] > nums[i + 1]) {
+                res[i] = Math.max(res[i], res[i + 1] + 1);
+            }
+        }
+
+        int sum = 0;
+
+        for (int num : res) {
+            sum += num;
+        }
+
+        return sum;
+    }
+
+    public static int ConvertBinarytoNum(String binary) {
+
+        int index = 0;
+
+        int num = 0;
+
+        for (int i = binary.length() - 1; i >= 0; i--) {
+            int rem = binary.charAt(i) - '0';
+            num += rem * Math.pow(2, index);
+            index++;
+        }
+
+        return num;
+
+    }
+
+    public static String NumtoBinary(int num) {
+
+        if (num == 0)
+            return "0";
+        StringBuilder sb = new StringBuilder();
+
+        while (num != 0) {
+            int rem = num % 2;
+            sb.append(rem);
+            num /= 2;
+
+        }
+
+        return sb.reverse().toString();
+
+    }
+
+    public static int TrappingraianWater(int nums[]) {
+        int start = 0;
+        int end = nums.length - 1;
+
+        int maxstart = 0;
+        int maxend = 0;
+        int water = 0;
+
+        while (start < end) {
+
+            if (nums[start] < nums[end]) {
+
+                if (nums[start] >= maxstart) {
+                    maxstart = nums[start];
+                } else {
+                    water += maxstart - nums[start];
+
+                }
+
+                start++;
+            }
+
+            else {
+
+                if (nums[end] >= maxend) {
+                    maxend = nums[end];
+                } else {
+                    water += maxend - nums[end];
+                }
+
+                end--;
+            }
+
+        }
+        return water;
+
+    }
+
+    public static int MaxsizeRectanglehistogram(int[] nums) {
+        Stack<Integer> stack = new Stack<>();
+        int n = nums.length;
+        int max = 0;
+
+        int newHeights[] = Arrays.copyOf(nums, n + 1);
+
+        for (int i = 0; i <= n; i++) {
+
+            while (!stack.isEmpty() && newHeights[i] < newHeights[stack.peek()]) {
+
+                int height = newHeights[stack.pop()];
+                int width = stack.isEmpty() ? i : i - 1 - stack.peek();
+                max = Math.max(max, height * width);
+            }
+
+            stack.push(i);
+        }
+        return max;
+
+    }
 
     // public static int MinimumSwapsToSort(int nums[]) {
 
@@ -1587,6 +1771,26 @@ public class arrays {
         // int nums[] = { 1, 2, 3, 7 };
         // System.out.println(CanSplitintoTwoEqualArrays(nums));
 
+        // int nums[] = { 10, 9, 4, 5, 8, 6, 101, 18, 23, 45, 7, 67 };
+        // System.out.println(HouseRobberII(nums));
+
+        // int nums[] = { 10, 9, 4, 5, 8, 6, 101, 11, 23, 45, 7, 67 };
+        // System.out.println(longestConsecutiveSubsequence(nums));
+
+        // int nums[] = { 1, 2, 0, 3, 5 };
+        // System.out.println(CandyProblam(nums));
+
+        // String binary = "10010101011010101";
+        // System.out.println(ConvertBinarytoNum(binary));
+
+        // int num = 76501;
+        // System.out.println(NumtoBinary(num));
+
+        // int nums[] = { 0, 1, 0, 2, 1, 0, 1, 3, 2, 1, 2, 1 };
+        // System.out.println(TrappingraianWater(nums));
+
+        int nums[] = { 2, 1, 5, 6, 2, 3 };
+        System.out.println(MaxsizeRectanglehistogram(nums));
     }
 
 }
