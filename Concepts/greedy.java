@@ -138,9 +138,141 @@ class greedy {
 
     }
 
-    // public static int AggressiveCows(int nums[], int target) {
+    public static void ActivitySelection(int start[], int end[]) {
 
-    // }
+        List<Integer> ans = new ArrayList<>();
+        int count = 1;
+        ans.add(0);
+
+        int Lastend = end[0];
+        for (int i = 1; i < start.length; i++) {
+            if (start[i] > Lastend) {
+                count++;
+                ans.add(i);
+                Lastend = end[i];
+            }
+        }
+
+        System.out.println("Total activivtes : " + count);
+        for (int num : ans) {
+            System.out.print("A" + num + " ");
+        }
+
+    }
+
+    public static int MInimumAbsoluteDifferencePairs(int nums1[], int nums2[]) {
+        Arrays.sort(nums1);
+        Arrays.sort(nums2);
+
+        int diff = 0;
+        for (int i = 0; i < nums1.length; i++) {
+            diff += Math.abs(nums1[i] - nums2[i]);
+        }
+        return diff;
+    }
+
+    public static int MaximumChainLength(int nums[][]) {
+
+        Arrays.sort(nums, (a, b) -> a[1] - b[1]);
+
+        int count = 1;
+        int Lastend = nums[0][1];
+
+        for (int i = 1; i < nums.length; i++) {
+            if (nums[i][0] > Lastend) {
+                count++;
+                Lastend = nums[i][1];
+            }
+        }
+        return count;
+    }
+
+    public static class Jobs {
+        String id;
+        int deadline;
+        int profit;
+
+        Jobs(String id, int deadline, int profit) {
+            this.id = id;
+            this.deadline = deadline;
+            this.profit = profit;
+        }
+    }
+
+    public static void JobSequencing(Jobs[] jobs) {
+
+        Arrays.sort(jobs, (a, b) -> b.profit - a.profit);
+
+        int deadline = 0;
+        for (Jobs job : jobs) {
+            deadline = Math.max(deadline, job.deadline);
+        }
+
+        String schedule[] = new String[deadline];
+        boolean time[] = new boolean[deadline];
+
+        int totalprofit = 0;
+        for (Jobs job : jobs) {
+            for (int i = deadline - 1; i >= 0; i--) {
+                if (!time[i]) {
+                    time[i] = true;
+                    schedule[i] = job.id;
+                    totalprofit += job.profit;
+                    break;
+                }
+            }
+        }
+
+        for (String job : schedule) {
+            if (job != null) {
+                System.out.print(job + " ");
+            }
+        }
+        System.out.println();
+        System.out.println("Total profit : " + totalprofit);
+
+    }
+
+    public static int CHOCOLAProblam(Integer costHor[], Integer costVer[]) {
+
+        Arrays.sort(costHor, Collections.reverseOrder());
+        Arrays.sort(costVer, Collections.reverseOrder());
+
+        int v = 0;
+        int h = 0;
+
+        int hp = 1;
+        int vp = 1;
+
+        int totalcost = 0;
+
+        while (v < costVer.length && h < costHor.length) {
+            if (costVer[v] >= costHor[h]) {
+
+                totalcost += hp * costVer[v];
+                v++;
+                vp++;
+            } else {
+                totalcost += vp * costHor[h];
+                h++;
+                hp++;
+            }
+        }
+
+        if (v < costVer.length) {
+            totalcost += hp * costVer[v];
+            v++;
+            vp++;
+        }
+
+        if (h < costHor.length) {
+            totalcost += vp * costHor[h];
+            h++;
+            hp++;
+        }
+        return totalcost;
+
+    }
 
     public static void main(String[] args) {
 
@@ -164,9 +296,33 @@ class greedy {
         // new Item(145, 28)
         // };
         // int W = 61;
-
         // double max = FractionalKnapSack(items, W);
         // System.out.println(max);
+
+        // int start[] = { 1, 3, 0, 5, 8, 5 };
+        // int end[] = { 2, 4, 6, 7, 9, 9 };
+        // ActivitySelection(start, end);
+
+        // int nums1[] = { 1, 2, 3 };
+        // int nums2[] = { 2, 1, 3 };
+        // int ans = MInimumAbsoluteDifferencePairs(nums1, nums2);
+        // System.out.println(ans);
+
+        // int nums[][] = { { 5, 24 }, { 39, 60 }, { 5, 28 }, { 27, 40 }, { 50, 90 } };
+        // System.out.println(MaximumChainLength(nums));
+
+        // Jobs[] jobs = {
+        // new Jobs("A", 2, 100),
+        // new Jobs("B", 5, 19),
+        // new Jobs("C", 4, 27),
+        // new Jobs("D", 1, 25),
+        // new Jobs("E", 3, 15)
+        // };
+        // JobSequencing(jobs);
+
+        Integer costVer[] = { 2, 1, 3, 1, 4 };
+        Integer costHor[] = { 4, 1, 2 };
+        System.out.println("Minimum Cost to cut the choclate : " + CHOCOLAProblam(costHor, costVer));
 
     }
 

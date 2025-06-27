@@ -121,6 +121,47 @@ public class binarysearch {
 
     }
 
+    public static int AggressiveCows(int nums[], int k) {
+        Arrays.sort(nums);
+
+        int start = 1;
+        int end = nums[nums.length - 1] - nums[0];
+        int ans = 0;
+
+        while (start <= end) {
+            int mid = start + (end - start) / 2;
+
+            if (CanPlace(nums, k, mid)) {
+                ans = mid;
+                start = mid + 1;
+            } else {
+                end = mid - 1;
+            }
+        }
+        return ans;
+
+    }
+
+    // Helper -- Aggressive cows
+    public static boolean CanPlace(int nums[], int k, int dist) {
+
+        int count = 1;
+        int lastpos = nums[0];
+
+        for (int i = 1; i < nums.length; i++) {
+            if (nums[i] - lastpos >= dist) {
+                count++;
+                lastpos = nums[i];
+            }
+
+            if (count == k) {
+                return true;
+            }
+        }
+        return false;
+
+    }
+
     public static void main(String[] args) {
 
         // int nums[] = { 4, 11, 18, 24, 28, 35, 42, 47, 53, 57, };
@@ -143,7 +184,13 @@ public class binarysearch {
         // int nums[] = { 28, 35, 42, 47, 53, 57, 4, 11, 18, 24 };
         // System.out.println("Minimum value : " + MinRotatedSearch(nums));
 
-        int matrix[][] = { { 1, 2, 3, 4 }, { 5, 6, 7, 8 }, { 9, 10, 11, 12 }, { 13, 14, 15, 16 } };
-        BinarySearch2D(matrix, 6);
+        // int matrix[][] = { { 1, 2, 3, 4 }, { 5, 6, 7, 8 }, { 9, 10, 11, 12 }, { 13,
+        // 14, 15, 16 } };
+        // BinarySearch2D(matrix, 6);
+
+        // int nums[] = { 5, 11, 17, 100 };
+        // int k = 2;
+        // System.out.println(AggressiveCows(nums, k));
+
     }
 }

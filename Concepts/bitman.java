@@ -1,0 +1,161 @@
+import java.util.Arrays;
+
+public class bitman {
+
+    public static void Operations(int n, int m) {
+
+        // AND
+        System.out.println(n & m);
+        // OR
+        System.out.println(n | m);
+        // XOR
+        System.out.println(n ^ m);
+        // COMPLEMENT
+        System.out.println(~n);
+        // LEFT SHIFT
+        System.out.println(n << 2);
+        // RIGHT SHIFT
+        System.out.println(n >> 2);
+    }
+
+    public static void EvenOrOdd(int n) {
+        int Bitmask = 1;
+        int sign = (n & Bitmask);
+
+        String result = (sign == 0) ? "even" : "odd";
+        System.out.println(result);
+
+    }
+
+    public static void getIthBit(int n, int i) {
+        int bitmask = 1 << i;
+        int sign = (n & bitmask);
+
+        int result = (sign == 0) ? 0 : 1;
+        System.out.println(result);
+    }
+
+    public static int SetiThbit(int n, int i) {
+
+        int bitmask = 1 << i;
+        return n | bitmask;
+
+    }
+
+    public static int ClearIthBit(int n, int i) {
+
+        int bitmask = ~(1 << i);
+        return n & bitmask;
+
+    }
+
+    public static int UpdateIthBit(int n, int i, int newbit) {
+        if (newbit == 0) {
+            return ClearIthBit(n, i); // n & ~(1<<i)
+        } else {
+            return SetiThbit(n, i); // n | (1<<i)
+        }
+
+    }
+
+    public static int clearIbits(int n, int i) {
+
+        int bitmask = (~0) << i; // (~0)<<i = 11111100
+        return n & bitmask; // 00001111 & 11111100 = 00001100
+    }
+
+    public static int CLearBitsInRange(int n, int i, int j) {
+
+        int a = ((~0) << (j + 1));
+        int b = (1 << i) - 1;
+
+        int bitmask = a | b;
+        return n & bitmask;
+
+    }
+
+    public static boolean IsPoweroftwo(int n) {
+        return ((n & (n - 1)) == 0);
+    }
+
+    public static int CountBits(int n) {
+        int count = 0;
+
+        while (n > 0) {
+            if ((n & 1) != 0) {
+                count++;
+            }
+            n = n >> 1;
+        }
+        return count;
+    }
+
+    public static double fastExpo(double a, int n) {
+
+        double ans = 1.0;
+        long power = n;
+
+        if (power < 0) {
+            a = 1 / a;
+            power = -power;
+
+        }
+
+        while (power > 0) {
+            if ((power & 1) != 0) {
+                ans = ans * a;
+            }
+            a = a * a;
+            power >>= 1;
+
+        }
+        return ans;
+    }
+
+    public static int[] CountNoOfones(int n) {
+
+        // DP approach
+        int dp[] = new int[n + 1];
+
+        for (int i = 0; i <= n; i++) {
+            dp[i] = dp[i >> 1] + (i & 1);
+        }
+
+        return dp;
+
+    }
+
+    public static void main(String[] args) {
+
+        // Operations(5, 6);
+
+        // EvenOrOdd(10);
+        // EvenOrOdd(11);
+
+        // getIthBit(10, 0);// 1010
+        // getIthBit(10, 1); //1010
+
+        // System.out.println(SetiThbit(5, 1)); //101
+        // System.out.println(SetiThbit(10, 2)); //1010
+
+        // System.out.println(ClearIthBit(10, 3)); //1010
+
+        // System.out.println(UpdateIthBit(10, 2, 1));
+        // System.out.println(UpdateIthBit(10, 3, 0));
+
+        // System.out.println(clearIbits(15, 2));
+
+        // System.out.println(CLearBitsInRange(10, 2, 4));
+
+        // System.out.println(IsPoweroftwo(17));
+
+        // System.out.println(CountBits(31));
+
+        // System.out.println(fastExpo(2.4, 2));
+
+        int arr[] = CountNoOfones(5);
+        System.out.println(Arrays.toString(arr));
+
+    }
+
+}

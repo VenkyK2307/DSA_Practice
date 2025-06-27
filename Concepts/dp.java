@@ -642,6 +642,60 @@ public class dp {
 
     }
 
+    public static int HouseRobberII(int nums[]) {
+        int n = nums.length;
+
+        if (n == 0)
+            return 0;
+        if (n == 1)
+            return nums[0];
+        if (n == 2)
+            return Math.max(nums[0], nums[1]);
+
+        // Step-1 0 to n-1;
+
+        int dp1[] = new int[n];
+
+        dp1[0] = nums[0];
+        dp1[1] = Math.max(nums[0], nums[1]);
+
+        for (int i = 2; i < n - 1; i++) {
+            dp1[i] = Math.max(dp1[i - 1], dp1[i - 2] + nums[i]);
+        }
+
+        // STEP-2 1 to n
+
+        int dp2[] = new int[n];
+
+        dp2[1] = nums[1];
+        dp2[2] = Math.max(nums[1], nums[2]);
+
+        for (int i = 3; i < n; i++) {
+            dp2[i] = Math.max(dp2[i - 1], dp2[i - 2] + nums[i]);
+        }
+
+        return Math.max(dp1[n - 2], dp2[n - 1]);
+
+    }
+
+    public static int MInCostToClimbStairs(int nums[]) {
+        int n = nums.length;
+        int dp[] = new int[n + 1];
+
+        dp[0] = 0;
+        dp[1] = 0;
+
+        for (int i = 2; i <= n; i++) {
+            dp[i] = Math.min(dp[i - 1] + nums[i - 1], dp[i - 2] + nums[i - 2]);
+        }
+
+        for (int i = 0; i < dp.length; i++) {
+            System.out.print(dp[i] + " ");
+        }
+        System.out.println();
+        return dp[n];
+
+    }
     // public static int BuyandSellStockIII(int nums[]) {
 
     // }
@@ -708,7 +762,7 @@ public class dp {
         // int W = 14;
         // System.out.println(TargetSum(nums, W));
 
-        // int nums[] = { 10, 20, 30, 10 };s
+        // int nums[] = { 10, 20, 30, 10 };
         // System.out.println(FrogJump(nums));
 
         // int nums[] = { 1, 2, 3, 1 };
@@ -743,6 +797,12 @@ public class dp {
 
         // int nums[] = { 7, 1, 5, 3, 6, 4 };
         // System.out.println(BuyandSellStockII(nums));
+
+        // int nums[] = { 10, 9, 4, 5, 8, 6, 10, 1, 18, 23, 4, 5, 7, 6, 7 };
+        // System.out.println(HouseRobberII(nums));
+
+        int nums[] = { 10, 15, 20 };
+        System.out.println(MInCostToClimbStairs(nums));
 
     }
 }

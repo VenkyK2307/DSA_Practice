@@ -193,6 +193,71 @@ public class strings {
         return sb.toString();
 
     }
+
+    public static boolean WordBreak(String s, List<String> dictionary) {
+
+        Set<String> dict = new HashSet<>(dictionary);
+
+        boolean dp[] = new boolean[s.length() + 1];
+
+        dp[0] = true;
+
+        for (int i = 1; i <= s.length(); i++) {
+            for (int j = 0; j < i; j++) {
+                if (dp[j] && dict.contains(s.substring(j, i))) {
+                    dp[i] = true;
+                    break;
+
+                }
+
+            }
+        }
+
+        for (int i = 0; i < dp.length; i++) {
+            System.out.print(dp[i] + " ");
+        }
+        System.out.println();
+
+        return dp[s.length()];
+    }
+
+    public static String LongestPolindromicSubstring(String str) {
+
+        // ExpandAroundCornersMethod;
+
+        if (str == null || str.length() < 1) {
+            return " ";
+        }
+
+        int start = 0;
+        int end = 0;
+
+        for (int i = 0; i < str.length(); i++) {
+
+            int len1 = ExpandAroundcenter(str, i, i);
+            int len2 = ExpandAroundcenter(str, i, i + 1);
+            int len = Math.max(len1, len2);
+
+            if (len > end - start) {
+
+                start = i - (len - 1) / 2;
+                end = i + len / 2;
+            }
+        }
+        return str.substring(start, end + 1);
+
+    }
+
+    public static int ExpandAroundcenter(String s, int left, int right) {
+
+        while (left >= 0 && right < s.length() && s.charAt(left) == s.charAt(right)) {
+            left--;
+            right++;
+        }
+
+        return right - left - 1;
+
+    }
     // public static String MinimumWinowSubstring(String str1, String str2) {
 
     // }
@@ -231,6 +296,13 @@ public class strings {
 
         // String str = "aabccdeeffd";
         // System.out.println(RemovesameConsecutiveChars(str));
+
+        // List<String> dictionary = Arrays.asList("leet", "code", "hopp ");
+        // String s = "leetcode";
+        // System.out.println("Word Exists : " + WordBreak(s, dictionary));
+
+        // String str = "geksskeeg";
+        // System.out.println(LongestPolindromicSubstring(str));
 
     }
 

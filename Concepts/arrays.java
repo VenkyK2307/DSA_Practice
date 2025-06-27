@@ -30,20 +30,6 @@ public class arrays {
         return nums.length != set.size();
     }
 
-    public static boolean ArmstrongNumber(int num) {
-
-        int org = num;
-        int sum = 0;
-        while (num != 0) {
-            int rem = num % 10;
-            sum += Math.pow(rem, 3.0);
-            num = num / 10;
-        }
-
-        return sum == org ? true : false;
-
-    }
-
     public static int kadenes(int nums[]) {
 
         int n = nums.length;
@@ -1346,42 +1332,6 @@ public class arrays {
         return false;
     }
 
-    public static int HouseRobberII(int nums[]) {
-        int n = nums.length;
-
-        if (n == 0)
-            return 0;
-        if (n == 1)
-            return nums[0];
-        if (n == 2)
-            return Math.max(nums[0], nums[1]);
-
-        // Step-1 0 to n-1;
-
-        int dp1[] = new int[n];
-
-        dp1[0] = nums[0];
-        dp1[1] = Math.max(nums[0], nums[1]);
-
-        for (int i = 2; i < n - 1; i++) {
-            dp1[i] = Math.max(dp1[i - 1], dp1[i - 2] + nums[i]);
-        }
-
-        // STEP-2 1 to n
-
-        int dp2[] = new int[n];
-
-        dp2[1] = nums[1];
-        dp2[2] = Math.max(nums[1], nums[2]);
-
-        for (int i = 3; i < n; i++) {
-            dp2[i] = Math.max(dp2[i - 1], dp2[i - 2] + nums[i]);
-        }
-
-        return Math.max(dp1[n - 2], dp2[n - 1]);
-
-    }
-
     public static int longestConsecutiveSubsequence(int nums[]) {
 
         HashSet<Integer> set = new HashSet<>();
@@ -1534,9 +1484,176 @@ public class arrays {
 
     }
 
-    // public static int MinimumSwapsToSort(int nums[]) {
+    public static boolean HappyNumber(int n) {
 
-    // }
+        HashSet<Integer> set = new HashSet<>();
+
+        while (n != 1 && !set.contains(n)) {
+            set.add(n);
+            n = getSquares(n);
+        }
+        return n == 1;
+    }
+
+    // Helper--(squares of digits)
+    public static int getSquares(int n) {
+        int rev = 0;
+        while (n != 0) {
+            int rem = n % 10;
+            rev += (rem * rem);
+            n /= 10;
+        }
+        return rev;
+    }
+
+    public static int[] NextPermutaion(int nums[]) {
+
+        int n = nums.length;
+        int i = n - 2;
+
+        while (i >= 0 && nums[i] >= nums[i + 1]) {
+            i--;
+        }
+
+        if (i >= 0) {
+            int j = n - 1;
+
+            while (nums[j] < nums[i]) {
+                j--;
+            }
+
+            int temp = nums[i];
+            nums[i] = nums[j];
+            nums[j] = temp;
+        }
+
+        int start = i + 1;
+        int end = n - 1;
+
+        while (start <= end) {
+            int temp = nums[start];
+            nums[start] = nums[end];
+            nums[end] = temp;
+            start++;
+            end--;
+        }
+        return nums;
+    }
+
+    public static boolean Armstrongnumber(int num) {
+
+        int original = num;
+        int sum = 0;
+
+        int digits = count(num);
+
+        while (num != 0) {
+            int rem = num % 10;
+
+            sum += Math.pow(rem, digits);
+            num /= 10;
+        }
+
+        return sum == original ? true : false;
+    }
+
+    // Helper -- Armstrong Number;
+    public static int count(int num) {
+
+        int count = 0;
+
+        while (num != 0) {
+            num /= 10;
+            count++;
+        }
+        return count;
+    }
+
+    public static List<Integer> WierdNum(int nums[], int k) {
+        // Number should not divisible by K but
+        // the nubers digit sum should be divisible by K;
+        List<Integer> list = new ArrayList<>();
+
+        for (int i = 0; i < nums.length; i++) {
+
+            int digits = sumofdigits(nums[i]);
+
+            if (nums[i] % k != 0 && digits % k == 0) {
+                {
+                    list.add(nums[i]);
+                }
+
+            }
+
+        }
+        return list;
+    }
+
+    // Helper--Wierd Number;
+    public static int sumofdigits(int num) {
+
+        int sum = 0;
+
+        while (num != 0) {
+            int rem = num % 10;
+            sum += rem;
+            num /= 10;
+        }
+        return sum;
+    }
+
+    public static boolean IsPerfectNUmber(int num) {
+
+        int sum = 1;
+
+        for (int i = 2; i * i < num; i++) {
+
+            if (num % i == 0) {
+                sum += i;
+                if (i != num / i) {
+                    sum += num / i;
+                }
+
+            }
+        }
+        return sum == num;
+
+    }
+
+    public static void LCMandHCF(int dividend, int divisor) {
+
+        int rem = dividend % divisor;
+
+        if (rem == 0) {
+            System.out.println(divisor);
+            return;
+
+        }
+        LCMandHCF(divisor, rem);
+
+    }
+
+    public static int LastStoneWeight(int nums[]) {
+
+        PriorityQueue<Integer> pq = new PriorityQueue<>(Collections.reverseOrder());
+
+        for (int num : nums) {
+            pq.add(num);
+        }
+
+        while (pq.size() > 1) {
+
+            int y = pq.poll();
+            int x = pq.poll();
+
+            if (y != x) {
+                pq.add(y - x);
+            }
+
+        }
+
+        return pq.isEmpty() ? 0 : pq.poll();
+    }
 
     public static void main(String[] args) {
 
@@ -1548,9 +1665,6 @@ public class arrays {
 
         // int nums[] = { 1,2,3,4,5,6,7 };
         // System.out.println(duplicates(nums));
-
-        // int n = 143;
-        // System.out.println(ArmstrongNumber(n));
 
         // int nums[] = { -8, -3, -6, -2, -5, -4 };
         // System.out.println(kadenes(nums));
@@ -1771,9 +1885,6 @@ public class arrays {
         // int nums[] = { 1, 2, 3, 7 };
         // System.out.println(CanSplitintoTwoEqualArrays(nums));
 
-        // int nums[] = { 10, 9, 4, 5, 8, 6, 101, 18, 23, 45, 7, 67 };
-        // System.out.println(HouseRobberII(nums));
-
         // int nums[] = { 10, 9, 4, 5, 8, 6, 101, 11, 23, 45, 7, 67 };
         // System.out.println(longestConsecutiveSubsequence(nums));
 
@@ -1789,8 +1900,33 @@ public class arrays {
         // int nums[] = { 0, 1, 0, 2, 1, 0, 1, 3, 2, 1, 2, 1 };
         // System.out.println(TrappingraianWater(nums));
 
-        int nums[] = { 2, 1, 5, 6, 2, 3 };
-        System.out.println(MaxsizeRectanglehistogram(nums));
+        // int nums[] = { 2, 1, 5, 6, 2, 3 };
+        // System.out.println(MaxsizeRectanglehistogram(nums));
+
+        // int n = 19;
+        // System.out.println("Is happy number : " + HappyNumber(n));
+
+        // int nums[] = { 1, 6, 2, 5, 4 };
+        // int arr[] = NextPermutaion(nums);
+        // System.out.println(Arrays.toString(arr));
+
+        // int num = 548814;
+        // boolean ans = Armstrongnumber(num);
+        // System.out.println(ans);
+
+        // int nums[] = { 23, 41, 40, 64, 55, 73 };
+        // int k = 5;
+        // System.out.println(WierdNum(nums, k));
+
+        // int num = 28;
+        // System.out.println(IsPerfectNUmber(num));
+
+        // int dividend = 36;
+        // int divisor = 12;
+        // LCMandHCF(dividend, divisor);
+
+        // int nums[] = { 2, 7, 4, 1, 8, 1 };
+        // System.out.println(LastStoneWeight(nums));
     }
 
 }

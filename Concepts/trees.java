@@ -5,7 +5,9 @@ import java.util.Map;
 import java.util.Queue;
 import java.util.TreeMap;
 
-import javax.swing.event.TreeExpansionEvent;
+// import javax.swing.plaf.basic.BasicInternalFrameTitlePane.MaximizeAction;
+
+// import javax.swing.event.TreeExpansionEvent;
 
 class TreeNode {
     int value;
@@ -160,13 +162,10 @@ class trees {
 
         Queue<TreeNode> queue = new LinkedList<>();
         queue.offer(root);
-
         System.out.print("Right view : ");
-
         while (!queue.isEmpty()) {
 
             int levelsize = queue.size();
-
             for (int i = 0; i < levelsize; i++) {
 
                 TreeNode node = queue.poll();
@@ -416,6 +415,84 @@ class trees {
 
     }
 
+    public static int MAximumPathSum(TreeNode root) {
+        int[] res = { root.value };
+        dfsMaxpath(root, res);
+        return res[0];
+    }
+
+    public static int dfsMaxpath(TreeNode root, int res[]) {
+
+        if (root == null)
+            return 0;
+
+        int right = Math.max(0, dfsMaxpath(root.right, res));
+        int left = Math.max(0, dfsMaxpath(root.left, res));
+
+        res[0] = left + right + root.value;
+
+        return Math.max(left, right) + root.value;
+
+    }
+
+    public static boolean isBalenced(TreeNode root) {
+
+        return HeightBalenced(root) != -1;
+    }
+
+    // HElper
+    public static int HeightBalenced(TreeNode root) {
+
+        if (root == null)
+            return 0;
+
+        int left = HeightBalenced(root.left);
+        if (left == -1)
+            return -1;
+
+        int right = HeightBalenced(root.right);
+        if (right == -1)
+            return -1;
+
+        if (Math.abs(right - left) > 1) {
+            return -1;
+        }
+        return Math.max(left, right) + 1;
+    }
+
+    public static List<List<Integer>> LevelOrder(TreeNode root) {
+
+        List<List<Integer>> map = new ArrayList<>();
+
+        Queue<TreeNode> queue = new LinkedList<>();
+        queue.add(root);
+
+        while (!queue.isEmpty()) {
+
+            int size = queue.size();
+
+            List<Integer> set = new ArrayList<>();
+
+            for (int i = 0; i < size; i++) {
+                TreeNode node = queue.poll();
+                set.add(node.value);
+
+                if (node.left != null) {
+                    queue.add(node.left);
+                }
+
+                if (node.right != null) {
+                    queue.add(node.right);
+                }
+
+            }
+            map.add(set);
+
+        }
+        return map;
+
+    }
+
     public static void main(String[] args) {
 
         /*
@@ -454,6 +531,7 @@ class trees {
         SubRoot.left = new TreeNode(8);
         SubRoot.right = new TreeNode(9);
         SubRoot.left.left = new TreeNode(16);
+        SubRoot.left.left.left = new TreeNode(17);
 
         // System.out.println("Tree Height : " + treeheightandDiameter(root));
         // System.out.println("Diameter : " + MaxDiameter);
@@ -500,6 +578,15 @@ class trees {
         // System.out.println(hasPath(root, 11));
 
         // DiagonalTraversal(root);
+
+        // int res = MAximumPathSum(SubRoot);
+        // System.out.println(res);
+
+        // boolean ans = isBalenced(root);
+        // System.out.println(ans);
+
+        List<List<Integer>> ans = LevelOrder(root);
+        System.out.println(ans);
 
     }
 
