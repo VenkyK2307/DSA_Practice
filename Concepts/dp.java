@@ -696,14 +696,41 @@ public class dp {
         return dp[n];
 
     }
+
+    public static int DecodeWays(String s) {
+
+        if (s == null || s.length() == 0)
+            return 0;
+
+        int n = s.length();
+        int dp[] = new int[n + 1];
+
+        dp[0] = 1;
+        dp[1] = 1;
+
+        for (int i = 2; i <= s.length(); i++) {
+            if (s.charAt(i - 1) != '0') {
+                dp[i] += dp[i - 1];
+            }
+
+            int twodigit = Integer.parseInt(s.substring(i - 2, i));
+            if (twodigit >= 10 && twodigit <= 26) {
+                dp[i] += dp[i - 2];
+            }
+
+        }
+
+        for (int num : dp) {
+            System.out.print(num + " ");
+        }
+        return dp[n];
+
+    }
     // public static int BuyandSellStockIII(int nums[]) {
 
     // }
 
     // public static int BuyandSellStockIV(int nums[]) {
-
-    // }
-    // public static int HouseRobberII(int nums[]) {
 
     // }
 
@@ -801,8 +828,11 @@ public class dp {
         // int nums[] = { 10, 9, 4, 5, 8, 6, 10, 1, 18, 23, 4, 5, 7, 6, 7 };
         // System.out.println(HouseRobberII(nums));
 
-        int nums[] = { 10, 15, 20 };
-        System.out.println(MInCostToClimbStairs(nums));
+        // int nums[] = { 10, 15, 20 };
+        // System.out.println(MInCostToClimbStairs(nums));
+
+        // String s = "226";
+        // System.out.println(DecodeWays(s));
 
     }
 }

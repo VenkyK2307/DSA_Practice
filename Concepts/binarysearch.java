@@ -162,6 +162,30 @@ public class binarysearch {
 
     }
 
+    public static List<Integer> KNearestElements(int nums[], int k, int x) {
+
+        int left = 0;
+        int right = nums.length - k;
+
+        while (left < right) {
+            int mid = left + (right - left) / 2;
+
+            if (x - nums[mid] > nums[mid + k] - x) {
+                left = mid + 1;
+            } else {
+                right = mid;
+            }
+        }
+
+        ArrayList<Integer> list = new ArrayList<>();
+
+        for (int i = left; i < left + k; i++) {
+            list.add(nums[i]);
+        }
+        return list;
+
+    }
+
     public static void main(String[] args) {
 
         // int nums[] = { 4, 11, 18, 24, 28, 35, 42, 47, 53, 57, };
@@ -192,5 +216,9 @@ public class binarysearch {
         // int k = 2;
         // System.out.println(AggressiveCows(nums, k));
 
+        int nums[] = { 1, 2, 3, 4, 5, 6, 7 };
+        int k = 4;
+        int x = 3;
+        System.out.println(KNearestElements(nums, k, x));
     }
 }

@@ -977,6 +977,26 @@ public class arrays {
         return true;
     }
 
+    public static int CanJumpII(int nums[]) {
+        int jumps = 0;
+        int farthest = 0;
+        int current = 0;
+
+        for (int i = 0; i < nums.length - 1; i++) {
+
+            farthest = Math.max(farthest, i + nums[i]);
+
+            if (i == current) {
+                jumps++;
+                current = farthest;
+            }
+
+        }
+
+        return jumps;
+
+    }
+
     public static int[] TopKFrequencyofElements(int nums[], int k) {
 
         HashMap<Integer, Integer> map = new HashMap<>();
@@ -1655,6 +1675,153 @@ public class arrays {
         return pq.isEmpty() ? 0 : pq.poll();
     }
 
+    public static int CountTrailingZerosofFact(int n) {
+
+        int counter = 0;
+
+        while (n > 5) {
+            n = n / 5;
+            counter += n;
+        }
+        return counter;
+    }
+
+    public static int MaxConsecutiveOnesII(int nums[]) {
+
+        int left = 0;
+        int zeros = 0;
+        int max = 0;
+
+        for (int right = 0; right < nums.length; right++) {
+            if (nums[right] == 0) {
+                zeros++;
+            }
+
+            while (zeros > 1) {
+                if (nums[left] == 0) {
+                    zeros--;
+                }
+                left++;
+            }
+            max = Math.max(max, right - left + 1);
+        }
+        return max;
+    }
+
+    public static int MaxConsecutiveOnesIII(int nums[], int k) {
+
+        int left = 0;
+        int zeros = 0;
+        int max = 0;
+
+        for (int right = 0; right < nums.length; right++) {
+
+            // Sliding Window + two Pointer
+
+            if (nums[right] == 0) {
+                zeros++;
+            }
+
+            while (zeros > k) {
+                if (nums[left] == 0) {
+                    zeros--;
+
+                }
+                left++;
+
+            }
+            max = Math.max(max, right - left + 1);
+
+        }
+
+        return max;
+
+    }
+
+    public static int dayofTheYear(String date) {
+
+        int months[] = { 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 };
+
+        // 2020-12-09 format
+
+        int year = Integer.parseInt(date.substring(0, 4));
+        int month = Integer.parseInt(date.substring(5, 7));
+        int remdays = Integer.parseInt(date.substring(8, 10));
+
+        if (IsLeapYear(year)) {
+            months[1] = 29;
+        }
+
+        int days = remdays;
+
+        for (int i = 0; i < month - 1; i++) {
+            days += months[i];
+        }
+
+        return days;
+
+    }
+
+    // Helper
+    public static boolean IsLeapYear(int year) {
+        return (year % 4 == 0 && year % 100 != 0) || (year % 400 == 0);
+
+    }
+
+    public static int[] MostNoofOnesRow(int[][] matrix) {
+
+        int n = matrix.length;
+        int m = matrix[0].length;
+        int max = 0;
+        int row = 0;
+
+        for (int i = 0; i < n; i++) {
+            int count = 0;
+            for (int j = 0; j < m; j++) {
+                if (matrix[i][j] == 1) {
+                    count++;
+                }
+
+            }
+            if (count > max) {
+                max = count;
+                row = i;
+            }
+
+        }
+
+        return new int[] { row, max };
+
+    }
+
+    public static int[][] InsertIntervels(int intervels[][], int newIntervel[]) {
+
+        List<int[]> list = new ArrayList<>();
+
+        int i = 0;
+        int n = intervels.length;
+
+        while (i < n && intervels[i][1] < newIntervel[0]) {
+            list.add(intervels[i]);
+            i++;
+        }
+
+        while (i < n && intervels[i][0] < newIntervel[1]) {
+            newIntervel[0] = Math.min(intervels[i][0], newIntervel[0]);
+            newIntervel[1] = Math.max(intervels[i][1], newIntervel[1]);
+            i++;
+
+        }
+        list.add(newIntervel);
+
+        while (i < n) {
+            list.add(intervels[i]);
+            i++;
+        }
+
+        return list.toArray(new int[list.size()][]);
+    }
+
     public static void main(String[] args) {
 
         // int nums[] = { 1,2,3,4,5,6,7 };
@@ -1821,6 +1988,9 @@ public class arrays {
         // int nums[] = { 3, 2, 1, 0, 4 };
         // System.out.println(CanJump(nums));
 
+        // int nums[] = { 2, 3, 1, 1, 4 };
+        // System.out.println(CanJumpII(nums));
+
         // int nums[] = { 1, 1, 1, 1, 1, 2, 2, 2, 2, 3, 3, 3, 4, 4, 5 };
         // int result[] = TopKFrequencyofElements(nums, 2);
         // System.out.println(Arrays.toString(result));
@@ -1927,6 +2097,34 @@ public class arrays {
 
         // int nums[] = { 2, 7, 4, 1, 8, 1 };
         // System.out.println(LastStoneWeight(nums));
+
+        // int n = 60;
+        // System.out.println(CountTrailingZerosofFact(n));
+
+        // int nums[] = { 1, 1, 1, 0, 0, 0, 1, 1, 1, 1, 0 };
+        // int k = 2;
+        // System.out.println(MaxConsecutiveOnesIII(nums, k));
+
+        // int nums2[] = { 1, 1, 1, 0, 0, 0, 1, 1, 1, 1, 0 };
+        // System.out.println(MaxConsecutiveOnesII(nums2));
+
+        // String date = "2024-02-10";
+        // System.out.println(dayofTheYear(date));
+
+        // int[][] matrix = {
+        // { 0, 0, 1, 0, 0 },
+        // { 1, 1, 0, 1, 0 },
+        // { 0, 1, 1, 1, 1 },
+        // { 0, 0, 0, 1, 1 }
+        // };
+        // int[] arr = MostNoofOnesRow(matrix);
+        // System.out.println(Arrays.toString(arr));
+
+        // int[][] intervals = { { 1, 3 }, { 6, 9 } };
+        // int[] newInterval = { 2, 5 };
+        // int[][] result = InsertIntervels(intervals, newInterval);
+        // System.out.println(Arrays.deepToString(result));
+
     }
 
 }

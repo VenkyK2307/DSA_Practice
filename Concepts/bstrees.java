@@ -178,6 +178,54 @@ public class bstrees {
 
     }
 
+    public static void LowestElementinBST(TreeNode root) {
+
+        if (root == null)
+            return;
+
+        while (root.left != null) {
+            root = root.left;
+        }
+
+        System.out.println(root.data);
+
+    }
+
+    public static void highestElementinBSt(TreeNode root) {
+        if (root == null)
+            return;
+
+        while (root.right != null) {
+            root = root.right;
+        }
+        System.out.println(root.data);
+    }
+
+    public static int result = 0;
+    public static int count = -1;
+
+    public static int KthSmallest(TreeNode root, int k) {
+        count = 0;
+        result = -1;
+        InorderKth(root, k);
+        return result;
+    }
+
+    // Helper -- KthSmallest
+    public static void InorderKth(TreeNode node, int k) {
+        if (node == null)
+            return;
+
+        InorderKth(node.left, k);
+        count++;
+        if (count == k) {
+            result = node.data;
+            return;
+        }
+        InorderKth(node.right, k);
+
+    }
+
     public static void main(String[] args) {
 
         int value[] = { 8, 5, 3, 1, 4, 6, 10, 11, 14 };
@@ -209,7 +257,17 @@ public class bstrees {
         // }
 
         // CreateMirror(root);
+
         // preorder(root);
+
+        // LowestElementinBST(root);
+
+        // highestElementinBSt(root);
+
+        // for (int i = 0; i < 10; i++) {
+        // System.out.println(i + "th" + "==>" + KthSmallest(root, i));
+        // }
+
     }
 
 }

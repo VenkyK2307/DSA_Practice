@@ -248,6 +248,7 @@ public class strings {
 
     }
 
+    // Helper--Longest polindrome ss
     public static int ExpandAroundcenter(String s, int left, int right) {
 
         while (left >= 0 && right < s.length() && s.charAt(left) == s.charAt(right)) {
@@ -258,9 +259,83 @@ public class strings {
         return right - left - 1;
 
     }
-    // public static String MinimumWinowSubstring(String str1, String str2) {
 
-    // }
+    public static List<String> PartitionStrings(String str) {
+
+        HashSet<String> set = new HashSet<>();
+        List<String> segments = new ArrayList<>();
+
+        int i = 0;
+        while (i < str.length()) {
+            StringBuilder sb = new StringBuilder();
+
+            int j = i;
+
+            while (j < str.length()) {
+                sb.append(str.charAt(j));
+                String curr = sb.toString();
+
+                if (!set.contains(curr)) {
+                    set.add(curr);
+                    segments.add(curr);
+
+                    break;
+                }
+
+                j++;
+            }
+            i = j + 1;
+
+        }
+        return segments;
+
+    }
+
+    public static String MinimumWindowSubString(String s, String t) {
+
+        HashMap<Character, Integer> tmap = new HashMap<>();
+
+        for (char c : t.toCharArray()) {
+            tmap.put(c, tmap.getOrDefault(c, 0) + 1);
+        }
+
+        HashMap<Character, Integer> window = new HashMap<>();
+
+        int left = 0;
+        int start = 0;
+        int right = 0;
+        int minval = Integer.MAX_VALUE;
+        int formed = 0;
+        int required = tmap.size();
+
+        while (right < s.length()) {
+
+            char ch = s.charAt(right);
+            window.put(ch, window.getOrDefault(ch, 0) + 1);
+            if (tmap.containsKey(ch) && tmap.get(ch).intValue() == window.get(ch).intValue()) {
+                formed++;
+            }
+
+            while (left <= right && formed == required) {
+                if (right - left + 1 < minval) {
+                    minval = right - left + 1;
+                    start = left;
+                }
+
+                char c = s.charAt(left);
+                window.put(c, window.getOrDefault(c, 0) - 1);
+                if (tmap.containsKey(c) && window.get(c).intValue() < tmap.get(c).intValue()) {
+                    formed--;
+                }
+
+                left++;
+            }
+
+            right++;
+        }
+
+        return minval == Integer.MAX_VALUE ? "" : s.substring(start, start + minval);
+    }
 
     public static void main(String[] args) {
 
@@ -303,6 +378,13 @@ public class strings {
 
         // String str = "geksskeeg";
         // System.out.println(LongestPolindromicSubstring(str));
+
+        // String str = "abbccccd";
+        // System.out.println(PartitionStrings(str));
+
+        // String s = "ADOBECODEBANC";
+        // String t = "ABC";
+        // System.out.println(MinimumWindowSubString(s, t));
 
     }
 

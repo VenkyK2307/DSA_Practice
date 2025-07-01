@@ -658,6 +658,92 @@ public class recursion {
         }
     }
 
+    public static int NoofIslands(char grid[][]) {
+        if (grid == null || grid.length == 0)
+            return 0;
+
+        int n = grid.length;
+        int m = grid[0].length;
+        int count = 0;
+
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < m; j++) {
+                if (grid[i][j] == '1') {
+                    searchforIslands(grid, i, j);
+                    count++;
+                }
+
+            }
+        }
+        return count;
+
+    }
+
+    // Helper -- No.of Islands
+    public static void searchforIslands(char[][] grid, int i, int j) {
+
+        if (i < 0 || j < 0 || i >= grid.length || j >= grid[0].length || grid[i][j] == '0')
+            return;
+
+        grid[i][j] = '0';
+
+        // 4 Directional
+        searchforIslands(grid, i + 1, j);
+        searchforIslands(grid, i - 1, j);
+        searchforIslands(grid, i, j + 1);
+        searchforIslands(grid, i, j - 1);
+
+        // 8 - directional
+        // searchforIslands(grid, i + 1, j);
+        // searchforIslands(grid, i - 1, j);
+        // searchforIslands(grid, i, j + 1);
+        // searchforIslands(grid, i, j - 1);
+        // searchforIslands(grid, i + 1, j + 1);
+        // searchforIslands(grid, i - 1, j - 1);
+        // searchforIslands(grid, i + 1, j - 1);
+        // searchforIslands(grid, i - 1, j + 1);
+
+    }
+
+    public static int MaxAreaIsland(int grid[][]) {
+
+        int n = grid.length;
+        int m = grid[0].length;
+
+        int maxarea = 0;
+
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < m; j++) {
+
+                if (grid[i][j] == 1) {
+                    int area = dfs(grid, i, j);
+                    maxarea = Math.max(maxarea, area);
+                }
+
+            }
+
+        }
+        return maxarea;
+    }
+
+    public static int dfs(int[][] grid, int i, int j) {
+        if (i < 0 || j < 0 || i >= grid.length || j >= grid[0].length || grid[i][j] == 0) {
+            return 0;
+        }
+
+        grid[i][j] = 0;
+
+        int count = 1;
+
+        count += dfs(grid, i + 1, j);
+        count += dfs(grid, i - 1, j);
+        count += dfs(grid, i, j + 1);
+        count += dfs(grid, i, j - 1);
+
+        return count;
+
+    }
+
     public static void main(String[] args) {
 
         // String str = "ABC";
@@ -802,6 +888,23 @@ public class recursion {
 
         // int nums1[] = { 1, 2, 2 };
         // System.out.println(Permutations2(nums1));
+
+        // char[][] grid = {
+        // { '0', '0', '1', '0', '0' },
+        // { '1', '1', '1', '0', '0' },
+        // { '0', '1', '0', '0', '0' },
+        // { '0', '0', '0', '0', '1' },
+        // { '0', '0', '0', '1', '1' }
+        // };
+        // System.out.println("Islands count : " + NoofIslands(grid));
+
+        // int[][] grid1 = {
+        // { 0, 0, 1, 0, 0 },
+        // { 1, 1, 1, 0, 0 },
+        // { 0, 1, 0, 0, 1 },
+        // { 0, 0, 0, 1, 1 }
+        // };
+        // System.out.println("Max area Island : " + MaxAreaIsland(grid1));
 
     }
 

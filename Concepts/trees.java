@@ -493,6 +493,30 @@ class trees {
 
     }
 
+    public static int CountGoodNodes(TreeNode root) {
+
+        return dfsCN(root, root.value);
+    }
+
+    // Helper -- Good Nodes
+    public static int dfsCN(TreeNode root, int max) {
+
+        if (root == null)
+            return 0;
+
+        int count = 0;
+
+        if (root.value > max) {
+            count++;
+            max = Math.max(max, root.value);
+        }
+
+        count += dfsCN(root.left, max);
+        count += dfsCN(root.right, max);
+
+        return count;
+    }
+
     public static void main(String[] args) {
 
         /*
@@ -585,8 +609,10 @@ class trees {
         // boolean ans = isBalenced(root);
         // System.out.println(ans);
 
-        List<List<Integer>> ans = LevelOrder(root);
-        System.out.println(ans);
+        // List<List<Integer>> ans = LevelOrder(root);
+        // System.out.println(ans);
+
+        // System.out.println(CountGoodNodes(root));
 
     }
 
