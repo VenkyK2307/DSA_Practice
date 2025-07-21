@@ -5,6 +5,7 @@ import java.util.LinkedList;
 import java.util.PriorityQueue;
 import java.util.Queue;
 import java.util.Stack;
+import java.util.List;
 
 public class graphs {
 
@@ -574,9 +575,184 @@ public class graphs {
 
     }
 
+    public static boolean CourseSchedule(int num, int[][] prerequsites) {
+
+        int[] indegree = new int[num];
+        List<List<Integer>> map = new ArrayList<>();
+
+        for (int i = 0; i < num; i++) {
+            map.add(new ArrayList<>());
+        }
+
+        for (int pre[] : prerequsites) {
+            int course = pre[0];
+            int prereq = pre[1];
+            map.get(prereq).add(course);
+            indegree[course]++;
+        }
+
+        Queue<Integer> queue = new LinkedList<>();
+        for (int i = 0; i < num; i++) {
+            if (indegree[i] == 0) {
+                queue.add(i);
+
+            }
+
+        }
+
+        // int completed = 0;
+        int idx = 0;
+
+        while (!queue.isEmpty()) {
+            int curr = queue.poll();
+            idx++;
+
+            for (int neighbour : map.get(curr)) {
+                indegree[neighbour]--;
+
+                if (indegree[neighbour] == 0) {
+                    queue.add(neighbour);
+                }
+            }
+        }
+
+        return (idx == num);
+
+    }
+
+    public static int[] CourseScheduleII(int num, int[][] prerequsites) {
+
+        int[] indegree = new int[num];
+        List<List<Integer>> map = new ArrayList<>();
+
+        for (int i = 0; i < num; i++) {
+            map.add(new ArrayList<>());
+        }
+
+        for (int pre[] : prerequsites) {
+            int course = pre[0];
+            int prereq = pre[1];
+            map.get(prereq).add(course);
+            indegree[course]++;
+        }
+        int flow[] = new int[num];
+
+        Queue<Integer> queue = new LinkedList<>();
+        for (int i = 0; i < num; i++) {
+            if (indegree[i] == 0) {
+                queue.add(i);
+
+            }
+
+        }
+
+        // int completed = 0;
+        int idx = 0;
+
+        while (!queue.isEmpty()) {
+            int curr = queue.poll();
+
+            flow[idx++] = curr;
+
+            for (int neighbour : map.get(curr)) {
+                indegree[neighbour]--;
+
+                if (indegree[neighbour] == 0) {
+                    queue.add(neighbour);
+                }
+            }
+        }
+
+        return (idx == num) ? flow : new int[] { 0 };
+
+    }
+
+    public static class OPair {
+        int col;
+        int row;
+
+        OPair(int row, int col) {
+            this.row = row;
+            this.col = col;
+        }
+
+    }
+
+    public static int RottenOranges(int[][] grid) {
+
+        int fresh = 0;
+        int rows = grid.length;
+        int cols = grid[0].length;
+        Queue<OPair> queue = new LinkedList<>();
+
+        for (int i = 0; i < rows; i++) {
+            for (int j = 0; j < cols; j++) {
+                if (grid[i][j] == 2) {
+                    queue.add(new OPair(i, j));
+                } else if (grid[i][j] == 1) {
+                    fresh++;
+                }
+            }
+        }
+
+        if (fresh == 0)
+            return 0;
+        int mins = ROBacktrack(grid, queue, cols, rows, 0);
+
+        for (int row[] : grid) {
+            for (int cells : row) {
+                if (cells == 1) {
+                    return -1;
+                }
+            }
+        }
+
+        return mins;
+
+    }
+
+    public static int ROBacktrack(int[][] grid, Queue<OPair> queue, int cols, int rows, int time) {
+
+        int size = queue.size();
+
+        if (size == 0)
+            return time - 1;
+
+        while (size-- > 0) {
+
+            OPair curr = queue.poll();
+            int r = curr.row;
+            int c = curr.col;
+
+            if (r > 0 && grid[r - 1][c] == 1) {
+                grid[r - 1][c] = 2;
+                queue.add(new OPair(r - 1, c));
+            }
+
+            if (r < rows - 1 && grid[r + 1][c] == 1) {
+                grid[r + 1][c] = 2;
+                queue.add(new OPair(r + 1, c));
+            }
+
+            if (c > 0 && grid[r][c - 1] == 1) {
+                grid[r][c - 1] = 2;
+                queue.add(new OPair(r, c - 1));
+            }
+
+            if (c < cols - 1 && grid[r][c + 1] == 1) {
+                grid[r][c + 1] = 2;
+                queue.add(new OPair(r, c + 1));
+            }
+
+        }
+        return ROBacktrack(grid, queue, cols, rows, time + 1);
+
+    }
+
     // Travelling Sales Man
     // Floyd Warshell Algo..
 
+    
     @SuppressWarnings("unchecked")
     public static void main(String[] args) {
         int V = 10;
@@ -662,6 +838,23 @@ public class graphs {
         // System.out.println("Cost : " + cost);
 
         // System.out.println(ConnectCitiesWithMinimumCost(graph, V));
+
+        // int num = 4;
+        // int[][] prerequsites = { { 1, 0 }, { 2, 1 }, { 3, 2 } };
+        // boolean ans = CourseSchedule(num, prerequsites);
+        // System.out.println(ans);
+
+        // int num1 = 4;
+        // int[][] prerequsites1 = { { 1, 0 }, { 2, 1 }, { 3, 2 } };
+        // int[] ans1 = CourseScheduleII(num1, prerequsites1);
+        // System.out.println(Arrays.toString(ans1));
+
+        int[][] grid = {
+                { 1, 1, 1 },
+                { 1, 2, 0 },
+                { 0, 1, 1 }
+        };
+        System.out.println(RottenOranges(grid));
 
     }
 

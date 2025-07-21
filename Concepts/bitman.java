@@ -1,4 +1,3 @@
-import java.util.Arrays;
 
 public class bitman {
 
@@ -125,6 +124,60 @@ public class bitman {
 
     }
 
+    public static int ReverseBits(int n) {
+
+        int result = 0;
+
+        for (int i = 0; i < 8; i++) {
+
+            int lastBit = n & 1;
+            result <<= 1;
+            result = result | lastBit;
+            n >>= 1;
+        }
+        return result;
+    }
+
+    public static int addTwoNUmbers(int a, int b) {
+
+        while (b != 0) {
+            int carry = a & b;// Finds carry
+            a = a ^ b;// Adds Wihout Carry
+            b = carry << 1;
+        }
+        return a;
+    }
+
+    public static int FindUniqueNumber(int nums[]) {
+
+        int result = 0;
+        for (int num : nums) {
+            result = result ^ num;
+        }
+        return result;
+    }
+
+    public static int FindUniqueNumberII(int nums[]) {
+
+        int result = 0;
+
+        for (int i = 0; i < 32; i++) {
+            int sum = 0;
+
+            for (int num : nums) {
+                if (((num >> i) & 1) == 0) {
+                    sum++;
+                }
+            }
+
+            if (sum % 3 != 0) {
+                result = result | (1 << i);
+            }
+
+        }
+        return result;
+    }
+
     public static void main(String[] args) {
 
         // Operations(5, 6);
@@ -153,9 +206,28 @@ public class bitman {
 
         // System.out.println(fastExpo(2.4, 2));
 
-        int arr[] = CountNoOfones(5);
-        System.out.println(Arrays.toString(arr));
+        // int arr[] = CountNoOfones(5);
+        // System.out.println(Arrays.toString(arr));
 
+        // int n = 11;
+        // int reversed = ReverseBits(n);
+        // System.out.println("Original (decimal): " + n);
+        // System.out.println("Original (binary) : " + String.format("%4s",
+        // Integer.toBinaryString(n)).replace(' ', '0'));
+        // System.out.println("Reversed (decimal): " + reversed);
+        // System.out.println(
+        // "Reversed (binary) : " + String.format("%4s",
+        // Integer.toBinaryString(reversed)).replace(' ', '0'));
+
+        // int a = 5;
+        // int b = 7;
+        // System.out.println(addTwoNUmbers(a, b));
+
+        // int nums[] = { 1, 1, 2, 3, 5, 5, 3, 4, 4 };
+        // System.out.println(FindUniqueNumber(nums));
+
+        // int nums2[] = { 1, 1, 1, 6, 5, 5, 5, 4, 4, 4 };
+        // System.out.println(FindUniqueNumber(nums2));
     }
 
 }

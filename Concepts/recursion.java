@@ -726,6 +726,7 @@ public class recursion {
         return maxarea;
     }
 
+    // Helper -- max Area
     public static int dfs(int[][] grid, int i, int j) {
         if (i < 0 || j < 0 || i >= grid.length || j >= grid[0].length || grid[i][j] == 0) {
             return 0;
@@ -741,6 +742,146 @@ public class recursion {
         count += dfs(grid, i, j - 1);
 
         return count;
+
+    }
+
+    public static boolean WordSearch(char board[][], String word) {
+
+        int n = board.length;
+        int m = board[0].length;
+
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < m; j++) {
+                if (WSBacktrack(board, word, i, j, 0)) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    // Helper -- Word Search
+    public static boolean WSBacktrack(char board[][], String word, int i, int j, int index) {
+
+        if (word.length() == index) {
+            return true;
+        }
+
+        if (i < 0 || j < 0 || i >= board.length || j >= board[0].length || board[i][j] != word.charAt(index)) {
+            return false;
+        }
+
+        char temp = board[i][j];
+
+        board[i][j] = '#';
+
+        boolean found = WSBacktrack(board, word, i + 1, j, index + 1) ||
+                WSBacktrack(board, word, i - 1, j, index + 1) ||
+                WSBacktrack(board, word, i, j + 1, index + 1) ||
+                WSBacktrack(board, word, i, j - 1, index + 1);
+
+        board[i][j] = temp;
+
+        return found;
+
+    }
+
+    public static int LongestPathinMatrix(int[][] matrix) {
+
+        int rows = matrix.length;
+        int cols = matrix[0].length;
+
+        int dp[][] = new int[rows][cols];
+        int maxlen = 0;
+
+        for (int i = 0; i < rows; i++) {
+            for (int j = 0; j < cols; j++) {
+                maxlen = Math.max(maxlen, LPbacktrack(matrix, i, j, -1, dp));
+            }
+        }
+
+        for (int i = 0; i < rows; i++) {
+            for (int j = 0; j < cols; j++) {
+                System.out.print(dp[i][j] + " ");
+            }
+            System.out.println();
+        }
+        return maxlen;
+
+    }
+
+    // Hemlper -- Longest path
+    public static int LPbacktrack(int[][] matrix, int i, int j, int prev, int[][] dp) {
+
+        if (i < 0 || j < 0 || i >= matrix.length || j >= matrix[0].length || matrix[i][j] <= prev)
+            return 0;
+
+        if (dp[i][j] != 0)
+            return dp[i][j];
+
+        int current = matrix[i][j];
+        int up = LPbacktrack(matrix, i - 1, j, current, dp);
+        int down = LPbacktrack(matrix, i + 1, j, current, dp);
+        int left = LPbacktrack(matrix, i, j - 1, current, dp);
+        int right = LPbacktrack(matrix, i, j + 1, current, dp);
+
+        dp[i][j] = Math.max(Math.max(up, down), Math.max(left, right)) + 1;
+
+        return dp[i][j];
+
+    }
+
+    public static List<List<Integer>> Combinations(int n, int k) {
+
+        List<List<Integer>> map = new ArrayList<>();
+        ComBackTrack(1, n, k, new ArrayList<>(), map);
+        System.out.println(map.size());
+        return map;
+
+    }
+
+    // Helper --Combinations
+    public static void ComBackTrack(int start, int n, int k, List<Integer> current, List<List<Integer>> map) {
+
+        if (current.size() == k) {
+            map.add(new ArrayList<>(current));
+            return;
+        }
+
+        for (int i = start; i <= n; i++) {
+            current.add(i);
+            ComBackTrack(i + 1, n, k, current, map);
+            current.remove(current.size() - 1);
+
+        }
+
+    }
+
+    public static int[][] FloodFill(int[][] image, int sr, int sc, int color) {
+
+        int orginalcolor = image[sr][sc];
+        if (orginalcolor == color)
+            return image;
+        FFBacktrack(image, sc, sr, color, orginalcolor);
+
+        return image;
+
+    }
+
+    public static void FFBacktrack(int[][] image, int row, int col, int color, int orginalcolor) {
+
+        if (row < 0 || row >= image.length || col < 0 || col >= image[0].length)
+            return;
+        if (image[row][col] != orginalcolor) {
+            return;
+        }
+
+        image[row][col] = color;
+
+        FFBacktrack(image, row - 1, col, color, orginalcolor);
+        FFBacktrack(image, row + 1, col, color, orginalcolor);
+        FFBacktrack(image, row, col - 1, color, orginalcolor);
+        FFBacktrack(image, row, col + 1, color, orginalcolor);
 
     }
 
@@ -905,6 +1046,32 @@ public class recursion {
         // { 0, 0, 0, 1, 1 }
         // };
         // System.out.println("Max area Island : " + MaxAreaIsland(grid1));
+
+        // char[][] board = {
+        // { 'A', 'B', 'C', 'E' },
+        // { 'S', 'F', 'C', 'S' },
+        // { 'A', 'D', 'E', 'E' }
+        // };
+        // String word = "ABCCED";
+        // System.out.println(WordSearch(board, word));
+
+        // int[][] matrix = {
+        // { 7, 6, 1 },
+        // { 2, 7, 6 },
+        // { 1, 3, 5 }
+        // };
+        // System.out.println(LongestPathinMatrix(matrix));
+
+        // int n = 10;
+        // int k = 2;
+        // System.out.println(Combinations(n, k));
+
+        // int image[][] = { { 1, 1, 1 }, { 1, 1, 0 }, { 1, 0, 1 } };
+        // int sr = 1;
+        // int sc = 1;
+        // int color = 2;
+        // int[][] image1 = FloodFill(image, sr, sc, color);
+        // System.out.println(Arrays.deepToString(image1));
 
     }
 

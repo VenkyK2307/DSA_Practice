@@ -186,6 +186,45 @@ public class binarysearch {
 
     }
 
+    public static int KOKOEatingbananas(int piles[], int h) {
+
+        int low = 1;
+        int high = findMax(piles);
+
+        while (low <= high) {
+
+            int mid = low + (high - low) / 2;
+
+            if (CanEatAll(piles, mid, h)) {
+                high = mid - 1;
+            } else {
+                low = mid + 1;
+            }
+        }
+        return low;
+    }
+
+    // Helper -- KOKOEatingBanana
+    public static boolean CanEatAll(int[] piles, int k, int h) {
+
+        int hours = 0;
+
+        for (int pile : piles) {
+            hours += (pile + k - 1) / k;
+        }
+        return hours <= h;
+
+    }
+
+    // Helper -- KOKOEatingBanana
+    public static int findMax(int piles[]) {
+        int max = 0;
+        for (int num : piles) {
+            max = Math.max(max, num);
+        }
+        return max;
+    }
+
     public static void main(String[] args) {
 
         // int nums[] = { 4, 11, 18, 24, 28, 35, 42, 47, 53, 57, };
@@ -216,9 +255,14 @@ public class binarysearch {
         // int k = 2;
         // System.out.println(AggressiveCows(nums, k));
 
-        int nums[] = { 1, 2, 3, 4, 5, 6, 7 };
-        int k = 4;
-        int x = 3;
-        System.out.println(KNearestElements(nums, k, x));
+        // int nums[] = { 1, 2, 3, 4, 5, 6, 7 };
+        // int k = 4;
+        // int x = 3;
+        // System.out.println(KNearestElements(nums, k, x));
+
+        // int piles[] = { 3, 6, 7, 11 };
+        // int h = 8;
+        // System.out.println(KOKOEatingbananas(piles, h));
+
     }
 }

@@ -1,3 +1,4 @@
+
 public class patterns {
 
     public static void Square(int n) {
@@ -123,6 +124,102 @@ public class patterns {
         }
     }
 
+    public static void Butterfly(int n) {
+
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j <= i; j++) {
+                System.out.print("*");
+            }
+            for (int j = 0; j < 2 * (n - i - 1); j++) {
+                System.out.print(" ");
+            }
+            for (int j = 0; j <= i; j++) {
+                System.out.print("*");
+            }
+            System.out.println();
+        }
+
+        for (int i = n - 2; i >= 0; i--) {
+            for (int j = 0; j <= i; j++) {
+                System.out.print("*");
+            }
+            for (int j = 0; j < 2 * (n - i - 1) - 1; j++) {
+                System.out.print(" ");
+            }
+            for (int j = 0; j <= i; j++) {
+                System.out.print("*");
+            }
+            System.out.println();
+        }
+    }
+
+    public static void Diamond(int n) {
+
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j <= n - 1 - i; j++) {
+                System.out.print(" ");
+            }
+            for (int j = 0; j <= 2 * i; j++) {
+                System.out.print("*");
+            }
+
+            System.out.println();
+        }
+
+        for (int i = n; i >= 0; i--) {
+            for (int j = 0; j <= n - 1 - i; j++) {
+                System.out.print(" ");
+            }
+            for (int j = 0; j <= 2 * i; j++) {
+                System.out.print("*");
+            }
+
+            System.out.println();
+        }
+    }
+
+    public static void Fpattern(int n) {
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < n; j++) {
+                if (j == 0 || i == 0 || i == n / 2) {
+                    System.out.print("*");
+                }
+            }
+            System.out.println();
+        }
+    }
+
+    public static void Apattern(int n) {
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < n - i - 1; j++) {
+                System.out.print(" ");
+            }
+
+            for (int j = 0; j < 1; j++) {
+                System.out.print("*");
+            }
+
+            for (int j = 0; j < 2 * i; j++) {
+
+                if (i == n / 2) {
+                    System.out.print("*");
+                } else {
+                    System.out.print(" ");
+
+                }
+            }
+
+            for (int j = 0; j < 1; j++) {
+
+                System.out.print("*");
+
+            }
+
+            System.out.println();
+
+        }
+    }
+
     public static void main(String[] args) {
 
         System.out.println("Printing....");
@@ -144,6 +241,14 @@ public class patterns {
         // LeftMOuntain(10);
 
         // Mountain(10);
+
+        // Butterfly(6);
+
+        // Diamond(5);
+
+        // Fpattern(5);
+
+        // Apattern(5);
 
     }
 }

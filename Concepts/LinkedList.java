@@ -1,12 +1,7 @@
 
 //Single LinkedList
 
-// import java.util.Arrays;
-// import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.PriorityQueue;
-
-// import org.xml.sax.HandlerBase;
+import java.util.*;
 
 class ListNode {
     int data;
@@ -533,6 +528,148 @@ public class LinkedList {
 
     }
 
+    public static ListNode Intersection(ListNode l1, ListNode l2) {
+
+        if (l1 == null || l2 == null)
+            return null;
+
+        ListNode a = l1;
+        ListNode b = l2;
+
+        while (a != b) {
+            a = (a == null) ? l2 : a.next;
+            b = (b == null) ? l1 : b.next;
+        }
+        return a;
+
+    }
+
+    public static void remove(ListNode node) {
+
+        node.data = node.next.data;
+        node.next = node.next.next;
+    }
+
+    public static ListNode DeleteMiddle(ListNode head) {
+
+        if (head == null || head.next == null) {
+            return null;
+        }
+
+        ListNode fast = head;
+        ListNode slow = head;
+        ListNode prev = null;
+
+        while (fast != null && fast.next != null) {
+
+            prev = slow;
+            slow = slow.next;
+            fast = fast.next.next;
+        }
+
+        prev.next = slow.next;
+
+        return head;
+
+    }
+
+    public static int LLtoBinary(ListNode head) {
+
+        int sum = 0;
+
+        ListNode curr = head;
+        while (curr != null) {
+            sum = sum * 2 + curr.data;
+            curr = curr.next;
+        }
+        return sum;
+    }
+
+    public static boolean Polindrome(ListNode head) {
+
+        if (head == null || head.next == null)
+            return true;
+
+        ListNode fast = head;
+        ListNode slow = head;
+
+        while (fast != null && fast.next != null) {
+            fast = fast.next.next;
+            slow = slow.next;
+
+        }
+
+        ListNode half = PReverse(slow);
+
+        ListNode first = head;
+        ListNode second = half;
+
+        while (second != null) {
+            if (first.data != second.data) {
+                return false;
+            }
+
+            first = first.next;
+            second = second.next;
+        }
+
+        return true;
+
+    }
+
+    // Helper -- Polindrome
+    public static ListNode PReverse(ListNode head) {
+
+        ListNode prev = null;
+
+        while (head != null) {
+            ListNode next = head.next;
+            head.next = prev;
+            prev = head;
+            head = next;
+        }
+
+        return prev;
+    }
+
+    public static void ReorederList(ListNode head) {
+
+        ListNode fast = head;
+        ListNode slow = head;
+
+        while (fast != null && fast.next != null && fast.next.next != null) {
+            fast = fast.next.next;
+            slow = slow.next;
+        }
+
+        ListNode second = slow.next;
+        slow.next = null;
+
+        ListNode prev = null;
+
+        while (second != null) {
+            ListNode next = second.next;
+            second.next = prev;
+            prev = second;
+            second = next;
+        }
+
+        ListNode first = head;
+        second = prev;
+
+        while (second != null) {
+            ListNode temp1 = first.next;
+            ListNode temp2 = second.next;
+
+            first.next = second;
+            second.next = temp1;
+
+            first = temp1;
+            second = temp2;
+        }
+
+    }
+
     public static void main(String[] args) {
 
         LinkedList list = new LinkedList();
@@ -582,19 +719,19 @@ public class LinkedList {
 
         // UnsortedRemoveDuplicates(head);
 
-        // ListNode l1 = new ListNode(2);
-        // ListNode eight = new ListNode(4);
-        // ListNode ninth = new ListNode(6);
-        // l1.next = eight;
-        // eight.next = ninth;
-        // ninth.next = null;
+        ListNode l1 = new ListNode(1);
+        ListNode eight = new ListNode(2);
+        ListNode ninth = new ListNode(1);
+        l1.next = eight;
+        eight.next = ninth;
+        ninth.next = null;
 
-        // ListNode l2 = new ListNode(1);
-        // ListNode tenth = new ListNode(4);
-        // ListNode eleventh = new ListNode(9);
-        // l2.next = tenth;
-        // tenth.next = eleventh;
-        // eleventh.next = null;
+        ListNode l2 = new ListNode(1);
+        ListNode tenth = new ListNode(4);
+        ListNode eleventh = new ListNode(9);
+        l2.next = tenth;
+        tenth.next = eleventh;
+        eleventh.next = null;
 
         // AddingNUmbers(l1, l2);
 
@@ -629,6 +766,34 @@ public class LinkedList {
 
         // int k = 7;
         // ReverseKNodes(head, k);
+
+        // ListNode common = new ListNode(4);
+        // common.next = new ListNode(5);
+        // // List A: 2 → 6 → 4 → 5
+        // ListNode l3 = new ListNode(2);
+        // l3.next = new ListNode(6);
+        // l3.next.next = common; // 👈 connects to shared part
+        // // List B: 1 → 4 → 5
+        // ListNode l4 = new ListNode(1);
+        // l4.next = common; // 👈 connects to shared part
+        // ListNode ans = Intersection(l3, l4);
+        // System.out.println(ans.data);
+
+        // ListNode delete = head.next.next;
+        // remove(delete);
+        // Print(head);
+
+        // DeleteMiddle(head);
+        // Print(head);
+
+        // int k = LLtoBinary(l1);
+        // System.out.println(k);
+
+        // boolean result = Polindrome(l2);
+        // System.out.println(result);
+
+        // ReorederList(head);
+        // Print(head);
 
     }
 

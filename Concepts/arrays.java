@@ -1,5 +1,6 @@
 
 import java.util.*;
+import java.util.LinkedList;
 
 public class arrays {
 
@@ -28,6 +29,21 @@ public class arrays {
             set.add(nums[i]);
         }
         return nums.length != set.size();
+    }
+
+    public static List<Integer> duplicatesnumbers(int nums[]) {
+
+        HashSet<Integer> set = new HashSet<>();
+        List<Integer> list = new ArrayList<>();
+
+        for (int num : nums) {
+            if (!set.add(num)) {
+                list.add(num);
+            }
+        }
+
+        return list;
+
     }
 
     public static int kadenes(int nums[]) {
@@ -1299,6 +1315,35 @@ public class arrays {
         return sb.toString();
     }
 
+    public static int RomantoInteger(String roman) {
+
+        HashMap<Character, Integer> map = new HashMap<>();
+        map.put('I', 1);
+        map.put('V', 5);
+        map.put('X', 10);
+        map.put('L', 50);
+        map.put('C', 100);
+        map.put('D', 500);
+        map.put('M', 1000);
+
+        int value = 0;
+
+        for (int i = 0; i < roman.length() - 1; i++) {
+            int curr = map.get(roman.charAt(i));
+            int next = map.get(roman.charAt(i + 1));
+
+            if (i + 1 < roman.length() && next > curr) {
+                value -= curr;
+            } else {
+                value += curr;
+            }
+
+        }
+        value += map.get(roman.charAt(roman.length() - 1));
+        return value;
+
+    }
+
     public static int LongestIncreaingSubsequence(int nums[]) {
 
         List<Integer> list = new ArrayList<>();
@@ -1822,6 +1867,454 @@ public class arrays {
         return list.toArray(new int[list.size()][]);
     }
 
+    public static int KthLargestMInHeap(int nums[], int k) {
+
+        PriorityQueue<Integer> minHeap = new PriorityQueue<>();
+
+        for (int num : nums) {
+            minHeap.offer(num);
+            while (minHeap.size() > k) {
+                minHeap.poll();
+            }
+        }
+        return minHeap.peek();
+    }
+
+    public static int KthSmallestElement(int nums[], int k) {
+        PriorityQueue<Integer> pq = new PriorityQueue<>(Collections.reverseOrder());
+
+        for (int num : nums) {
+            pq.offer(num);
+
+            if (pq.size() > k) {
+                pq.poll();
+            }
+        }
+
+        return pq.peek();
+
+    }
+
+    public static int findPivotNUmber(int n) {
+        int total = (n * (n + 1)) / 2;
+
+        int sum = 0;
+        for (int i = 1; i <= n; i++) {
+            sum = sum + i;
+            if (total == 2 * sum - i) {
+                return i;
+            }
+        }
+        return -1;
+
+    }
+
+    public static boolean MeetingRooms(int[][] meetings) {
+
+        for (int i = 1; i < meetings.length; i++) {
+            if (meetings[i][0] < meetings[i - 1][1]) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public static int MeetingRoomsII(int[][] meetings) {
+
+        Arrays.sort(meetings, (a, b) -> a[0] - b[0]);
+        PriorityQueue<Integer> pq = new PriorityQueue<>();
+        pq.offer(meetings[0][1]);
+
+        for (int i = 1; i < meetings.length; i++) {
+            if (meetings[i][0] >= pq.peek()) {
+                pq.poll(); // If the overlap is not there, no need of new meeting room
+            }
+            pq.offer(meetings[i][1]);
+        }
+
+        return pq.size();
+
+    }
+
+    // same as "Divide array into set of K Consecutive numbers"
+    public static boolean handsOfStraight(int nums[], int k) {
+
+        if (nums.length % k != 0)
+            return false;
+
+        TreeMap<Integer, Integer> map = new TreeMap<>();
+
+        for (int num : nums) {
+            map.put(num, map.getOrDefault(num, 0) + 1);
+        }
+
+        while (!map.isEmpty()) {
+
+            int first = map.firstKey();
+
+            for (int i = 0; i < k; i++) {
+                int card = first + i;
+
+                if (!map.containsKey(card))
+                    return false;
+
+                map.put(card, map.get(card) - 1);
+
+                if (map.get(card) == 0) {
+                    map.remove(card);
+                }
+            }
+        }
+
+        return true;
+    }
+
+    public static int KthSmallestElementinMatrixSorted(int matrix[][], int k) {
+
+        PriorityQueue<Integer> pq = new PriorityQueue<>(Collections.reverseOrder());
+        for (int i = 0; i < matrix.length; i++) {
+            for (int j = 0; j < matrix[0].length; j++) {
+                pq.add(matrix[i][j]);
+
+                if (pq.size() > k) {
+                    pq.poll();
+                }
+            }
+        }
+
+        return pq.peek();
+    }
+
+    public static int[][] KclosestPointstoOrigin(int points[][], int k) {
+
+        PriorityQueue<int[]> pq = new PriorityQueue<>((a, b) -> distance(b) - distance(a));
+
+        for (int[] point : points) {
+            pq.offer(point);
+            if (pq.size() > k) {
+                pq.poll();
+            }
+        }
+
+        int result[][] = new int[k][2];
+        int idx = 0;
+        for (int i = 0; i < k; i++) {
+            result[idx++] = pq.poll();
+        }
+        return result;
+
+    }
+
+    // Helper--KClosestPointstoOrigin
+    public static int distance(int point[]) {
+        return point[0] * point[0] + point[1] * point[1];
+
+    }
+
+    public static int[] SquaresandSortedArray(int nums[]) {
+
+        int n = nums.length;
+
+        int left = 0;
+        int right = n - 1;
+        int idx = n - 1;
+        int res[] = new int[n];
+
+        while (left <= right) {
+
+            int leftsquare = nums[left] * nums[left];
+            int rightsquare = nums[right] * nums[right];
+
+            if (leftsquare > rightsquare) {
+                res[idx--] = leftsquare;
+                left++;
+
+            } else {
+                res[idx--] = rightsquare;
+                right--;
+            }
+        }
+        Arrays.sort(res);
+
+        return res;
+    }
+
+    public static double FindTheMedian(int nums[]) {
+
+        PriorityQueue<Integer> minheap = new PriorityQueue<>();
+        PriorityQueue<Integer> maxheap = new PriorityQueue<>(Collections.reverseOrder());
+
+        for (int num : nums) {
+
+            maxheap.offer(num);
+            minheap.offer(maxheap.poll());
+
+            if (maxheap.size() < minheap.size()) {
+                maxheap.offer(minheap.poll());
+            }
+        }
+
+        if (maxheap.size() == minheap.size()) {
+            return (maxheap.peek() + minheap.peek()) / 2.0;
+        } else {
+            return maxheap.peek();
+        }
+
+    }
+
+    public static int[] SetMismatch(int nums[]) {
+
+        int counter[] = new int[nums.length + 1];
+        int res[] = new int[2];
+
+        for (int num : nums) {
+            counter[num]++;
+        }
+
+        for (int i = 0; i <= nums.length; i++) {
+            if (counter[i] == 2) {
+                res[0] = i;
+            }
+
+            if (counter[i] == 0) {
+                res[1] = i;
+
+            }
+        }
+
+        return res;
+    }
+
+    public static int PlayerandTrainers(int players[], int trainers[]) {
+
+        Arrays.sort(players);
+        Arrays.sort(trainers);
+
+        int counter = 0;
+        int i = 0;
+        int j = 0;
+
+        while (i < players.length && j < trainers.length) {
+            if (players[i] <= trainers[j]) {
+                counter++;
+                i++;
+
+            }
+            j++;
+        }
+        return counter;
+
+    }
+
+    public static int LongestConitgiousArrayofZerosandOnes(int nums[]) {
+
+        HashMap<Integer, Integer> map = new HashMap<>();
+        map.put(0, -1);
+        int maxLen = 0;
+        int sum = 0;
+
+        for (int i = 0; i < nums.length; i++) {
+
+            sum += nums[i] == 0 ? -1 : 1;
+
+            if (map.containsKey(sum)) {
+                maxLen = Math.max(maxLen, i - map.get(sum));
+            } else {
+                map.put(sum, i);
+            }
+        }
+        return maxLen;
+
+    }
+
+    public static int LongestValidSequencewithCondition(int nums[]) {
+
+        int oddcount = 0;
+        int evencount = 0;
+
+        for (int num : nums) {
+            if (num % 2 == 0) {
+                evencount++;
+            } else {
+                oddcount++;
+            }
+        }
+
+        int maxp1 = Math.max(evencount, oddcount);
+
+        int prevparity = nums[0] % 2;
+        int maxlen = 1;
+
+        for (int i = 1; i < nums.length; i++) {
+            int presentparity = nums[i] % 2;
+
+            if (prevparity != presentparity) {
+                maxlen++;
+                prevparity = presentparity;
+            }
+        }
+
+        return Math.max(maxp1, maxlen);
+
+    }
+
+    public static int LongestValidSequencewithConditionII(int nums[], int k) {
+
+        int n = nums.length;
+        int ans = 1;
+
+        int dp[][] = new int[n][k];
+
+        for (int arr[] : dp) {
+            Arrays.fill(arr, 1);
+        }
+
+        for (int i = 1; i < n; i++) {
+            for (int j = 0; j < i; j++) {
+                int mod = (nums[i] + nums[j]) % k;
+
+                dp[i][mod] = dp[j][mod] + 1;
+                ans = Math.max(ans, dp[i][mod]);
+
+            }
+        }
+        for (int i = 0; i < dp.length; i++) {
+            for (int j = 0; j < dp[0].length; j++) {
+                System.out.print(dp[i][j] + " ");
+            }
+            System.out.println();
+        }
+
+        return ans;
+
+    }
+
+    public static int MInDiffAfterRemovel(int nums[]) {
+        int length = nums.length;
+        int n = length / 3;
+
+        int[] right = new int[length];
+        int[] left = new int[length];
+
+        PriorityQueue<Integer> pq1 = new PriorityQueue<>(Collections.reverseOrder());
+        int leftsum = 0;
+
+        for (int i = 0; i < length; i++) {
+            pq1.offer(nums[i]);
+            leftsum += nums[i];
+
+            if (pq1.size() > n) {
+                leftsum -= pq1.poll();
+            }
+
+            if (pq1.size() == n) {
+                left[i] = leftsum;
+            }
+
+        }
+
+        PriorityQueue<Integer> pq2 = new PriorityQueue<>();
+        int rightsum = 0;
+
+        for (int i = length - 1; i >= 0; i--) {
+            pq2.offer(nums[i]);
+            rightsum += nums[i];
+
+            if (pq2.size() > n) {
+                rightsum -= pq2.poll();
+            }
+
+            if (pq2.size() == n) {
+                right[i] = rightsum;
+            }
+
+        }
+
+        int mindiff = Integer.MAX_VALUE;
+
+        for (int i = n; i < 2 * n; i++) {
+            int diff = left[i] - right[i + 1];
+            mindiff = Math.min(diff, mindiff);
+        }
+        return mindiff;
+
+    }
+
+    public static int[][] Matrix01(int[][] matrix) {
+
+        int row = matrix.length;
+        int col = matrix[0].length;
+
+        int[][] result = new int[row][col];
+        boolean[][] visited = new boolean[row][col];
+        Queue<int[]> queue = new LinkedList<>();
+
+        for (int i = 0; i < row; i++) {
+            for (int j = 0; j < col; j++) {
+                if (matrix[i][j] == 1) {
+                    queue.add(new int[] { i, j });
+                    visited[i][j] = true;
+                }
+            }
+        }
+
+        int directions[][] = { { 0, 1 }, { 1, 0 }, { -1, 0 }, { 0, -1 } };
+
+        while (!queue.isEmpty()) {
+            int curr[] = queue.poll();
+            int rows = curr[0];
+            int cols = curr[1];
+
+            for (int[] dir : directions) {
+                int newrow = rows + dir[0];
+                int newcol = cols + dir[1];
+
+                if (newcol >= 0 && newrow >= 0 && newrow < row && newcol < col && !visited[newrow][newcol]) {
+
+                    result[newrow][newcol] = result[rows][cols] + 1;
+                    visited[newrow][newcol] = true;
+                    queue.add(new int[] { newrow, newcol });
+
+                }
+
+            }
+        }
+
+        for (int i = 0; i < result.length; i++) {
+            for (int j = 0; j < result[0].length; j++) {
+                System.out.print(result[i][j] + " ");
+            }
+            System.out.println();
+        }
+        return result;
+
+    }
+
+    public static int NoofSubarraysumequaltoK(int nums[], int k) {
+
+        HashMap<Integer, Integer> map = new HashMap<>();
+
+        map.put(0, 1);
+
+        int sum = 0;
+        int count = 0;
+
+        for (int num : nums) {
+
+            sum += num;
+
+            if (map.containsKey(sum - k)) {
+                count = count + map.get(sum - k);
+            }
+
+            map.put(sum, map.getOrDefault(sum, 0) + 1);
+
+        }
+
+        return count;
+
+    }
+
     public static void main(String[] args) {
 
         // int nums[] = { 1,2,3,4,5,6,7 };
@@ -1832,6 +2325,9 @@ public class arrays {
 
         // int nums[] = { 1,2,3,4,5,6,7 };
         // System.out.println(duplicates(nums));
+
+        // int nums[] = { 1, 2, 3, 3, 4, 2 };
+        // System.out.println(duplicatesnumbers(nums));
 
         // int nums[] = { -8, -3, -6, -2, -5, -4 };
         // System.out.println(kadenes(nums));
@@ -1957,7 +2453,7 @@ public class arrays {
         // List<List<Integer>> result = COuntInversions(nums);
         // System.out.println(result);
 
-        // int nums[] = { 1, 2, 3, 4, 5, 6, 6 };
+        // int nums[] = { 1, 2, 3, 4, 2, 5, 6 };
         // List<Integer> finals = MissingAndRepeating(nums);
         // System.out.println(finals);
 
@@ -2049,6 +2545,9 @@ public class arrays {
         // int num = 1994;
         // System.out.println(IntegerToRoman(num));
 
+        // String roman = "LVIII";
+        // System.out.println(RomantoInteger(roman));
+
         // int nums[] = { 10, 9, 2, 5, 3, 7, 101, 18, 23, 45, 7, 67 };
         // System.out.println(LongestIncreaingSubsequence(nums));
 
@@ -2125,6 +2624,67 @@ public class arrays {
         // int[][] result = InsertIntervels(intervals, newInterval);
         // System.out.println(Arrays.deepToString(result));
 
-    }
+        // int nums[] = { 1, 2, 3, 4, 5, 6, 7 };
+        // int k = 3;
+        // System.out.println(KthLargestMInHeap(nums, k));
+        // System.out.println(KthSmallestElement(nums, k));
 
+        // int n = 8;
+        // System.out.println(findPivotNUmber(n));
+
+        // int[][] meetings = { { 0, 30 }, { 5, 10 }, { 15, 20 } };
+        // System.out.println(MeetingRooms(meetings));
+
+        // int[][] meetings = { { 0, 6 }, { 5, 10 }, { 4, 20 } };
+        // System.out.println(MeetingRoomsII(meetings));
+
+        // int nums[] = { 1, 2, 3, 6, 2, 3, 4, 7, 8 };
+        // int k = 3;
+        // System.out.println(handsOfStraight(nums, k));
+
+        // int matrix[][] = { { 1, 2, 3 }, { 4, 5, 6 }, { 7, 8, 9 } };
+        // int k = 4;
+        // System.out.println(KthSmallestElementinMatrixSorted(matrix, k));
+
+        // int points[][] = { { 1, 2 }, { 2, 1 }, { 4, 5 }, { 2, 3 } };
+        // int k = 3;
+        // int[][] result = KclosestPointstoOrigin(points, k);
+        // System.out.println(Arrays.deepToString(result));
+
+        // int nums[] = { -2, 9, -3, -6, 8, 10 };
+        // int arr[] = SquaresandSortedArray(nums);
+        // System.out.println(Arrays.toString(arr));
+
+        // int nums[] = { 2, 3, 1, 5, 4, 8, 6, 7, 9 };
+        // System.out.println(FindTheMedian(nums));
+
+        // int nums[] = { 1, 2, 3, 4, 4, 6, 7 };
+        // int[] arr = SetMismatch(nums);
+        // System.out.println(Arrays.toString(arr));
+
+        // int[] players = { 4, 7, 9 };
+        // int[] trainers = { 8, 2, 5, 8 };
+        // System.out.println(PlayerandTrainers(players, trainers));
+
+        // int nums[] = { 0, 1, 0, 1, 1, 0, 0, 1 };
+        // System.out.println(LongestConitgiousArrayofZerosandOnes(nums));
+
+        // int nums[] = { 1, 2, 1, 2, 3, 1, 2, 3, 4 };
+        // System.out.println(LongestValidSequencewithCondition(nums));
+
+        // int nums[] = { 1, 2, 3, 4, 5 };
+        // System.out.println(LongestValidSequencewithConditionII(nums, 2));
+
+        // int nums[] = { 7, 9, 5, 8, 1, 3 };
+        // System.out.println(MInDiffAfterRemovel(nums));
+
+        // int matrix[][] = { { 0, 0, 1 }, { 1, 0, 0 }, { 0, 0, 0 } };
+        // int res[][] = Matrix01(matrix);
+        // System.out.println(Arrays.deepToString(res));
+
+        // int nums[] = { 1, 2, 3, 4 };
+        // int k = 1;
+        // System.out.println(NoofSubarraysumequaltoK(nums, k));
+
+    }
 }

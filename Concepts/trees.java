@@ -517,6 +517,22 @@ class trees {
         return count;
     }
 
+    public static TreeNode LowestCommanAnsector(TreeNode root, TreeNode p, TreeNode q) {
+
+        if (root == null || root == p || root == q) {
+            return root;
+        }
+
+        TreeNode left = LowestCommanAnsector(root.left, p, q);
+        TreeNode right = LowestCommanAnsector(root.right, p, q);
+
+        if (left != null && right != null) {
+            return root;
+        }
+
+        return (left != null) ? left : right;
+    }
+
     public static void main(String[] args) {
 
         /*
@@ -613,6 +629,11 @@ class trees {
         // System.out.println(ans);
 
         // System.out.println(CountGoodNodes(root));
+
+        // TreeNode p = root.left.right.left;
+        // TreeNode q = root.left.left.left.left;
+        // TreeNode res = LowestCommanAnsector(root, p, q);
+        // System.out.println(res.value);
 
     }
 

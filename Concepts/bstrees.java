@@ -226,6 +226,24 @@ public class bstrees {
 
     }
 
+    public static boolean Search(TreeNode root, int k) {
+
+        if (root == null) {
+            return false;
+        }
+
+        if (root.data == k) {
+            return true;
+        }
+
+        if (k <= root.data) {
+            return Search(root.left, k);
+        }
+
+        return Search(root.right, k);
+
+    }
+
     public static void main(String[] args) {
 
         int value[] = { 8, 5, 3, 1, 4, 6, 10, 11, 14 };
@@ -268,6 +286,8 @@ public class bstrees {
         // System.out.println(i + "th" + "==>" + KthSmallest(root, i));
         // }
 
+        // int k = 13;
+        // System.out.println(Search(root, k));
     }
 
 }

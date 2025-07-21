@@ -726,13 +726,37 @@ public class dp {
         return dp[n];
 
     }
-    // public static int BuyandSellStockIII(int nums[]) {
 
-    // }
+    public static int AddorSubTargetSum(int nums[], int target) {
 
-    // public static int BuyandSellStockIV(int nums[]) {
+        int total = 0;
 
-    // }
+        for (int num : nums) {
+            total += num;
+        }
+
+        if ((target + total) % 2 != 0 || Math.abs(target) > total) {
+            return 0;
+        }
+
+        int subsetsum = (target + total) / 2;
+        int dp[] = new int[subsetsum + 1];
+        dp[0] = 1;
+
+        for (int num : nums) {
+            for (int j = subsetsum; j >= num; j--) {
+                dp[j] = dp[j] + dp[j - num];
+            }
+        }
+
+        for (int num : dp) {
+            System.out.print(num + " ");
+
+        }
+
+        return dp[subsetsum];
+
+    }
 
     public static void main(String[] args) {
 
@@ -833,6 +857,10 @@ public class dp {
 
         // String s = "226";
         // System.out.println(DecodeWays(s));
+
+        // int nums[] = { 1, 1, 1, 1, 1 };
+        // int target = 5;
+        // System.out.println(AddorSubTargetSum(nums, target));
 
     }
 }

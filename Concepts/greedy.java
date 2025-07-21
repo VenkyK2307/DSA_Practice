@@ -274,6 +274,75 @@ class greedy {
 
     }
 
+    public static int TaskScheduler(char tasks[], int k) {
+
+        int freq[] = new int[26];
+
+        for (char task : tasks) {
+            freq[task - 'A']++;
+        }
+
+        Arrays.sort(freq);
+        int maxfreq = freq[25];
+        int count = 0;
+
+        for (int i = 24; i >= 0; i--) {
+            if (maxfreq == freq[i]) {
+                count++;
+            } else {
+                break;
+            }
+        }
+
+        int partcount = k + 1;
+        int partlength = maxfreq - 1;
+        int emptyslots = partcount * partlength + count;
+        return Math.max(tasks.length, emptyslots);
+
+    }
+
+    public static int AssignCookies(int child[], int cookie[]) {
+
+        Arrays.sort(child);
+        Arrays.sort(cookie);
+
+        int count = 0;
+        int i = 0;
+        int j = 0;
+
+        while (i < child.length && j < cookie.length) {
+            if (child[i] <= cookie[j]) {
+                count++;
+                i++;
+            }
+            j++;
+        }
+
+        return count;
+    }
+
+    public static int PerfectSquare(int n) {
+
+        int dp[] = new int[n + 1];
+        Arrays.fill(dp, Integer.MAX_VALUE);
+        dp[0] = 0;
+
+        for (int i = 1; i <= n; i++) {
+            int sq = i * i;
+            for (int j = sq; j <= n; j++) {
+                dp[j] = Math.min(dp[j], dp[j - sq] + 1);
+            }
+
+        }
+
+        for (int num : dp) {
+            System.out.print(num + " ");
+        }
+        System.out.println();
+
+        return dp[n];
+    }
+
     public static void main(String[] args) {
 
         // int coins[] = { 5, 5, 10, 10, 20 };
@@ -320,9 +389,21 @@ class greedy {
         // };
         // JobSequencing(jobs);
 
-        Integer costVer[] = { 2, 1, 3, 1, 4 };
-        Integer costHor[] = { 4, 1, 2 };
-        System.out.println("Minimum Cost to cut the choclate : " + CHOCOLAProblam(costHor, costVer));
+        // Integer costVer[] = { 2, 1, 3, 1, 4 };
+        // Integer costHor[] = { 4, 1, 2 };
+        // System.out.println("Minimum Cost to cut the choclate : " +
+        // CHOCOLAProblam(costHor, costVer));
+
+        // char tasks[] = { 'A', 'A', 'A', 'B', 'B', 'B' };
+        // int k = 2;
+        // System.out.println(TaskScheduler(tasks, k));
+
+        // int child[] = { 1, 2, 3 };
+        // int[] cookie = { 1, 1 };
+        // System.out.println(AssignCookies(child, cookie));
+
+        // int n = 1087;
+        // System.out.println(PerfectSquare(n));
 
     }
 

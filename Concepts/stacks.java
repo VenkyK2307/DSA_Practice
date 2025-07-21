@@ -156,6 +156,35 @@ public class stacks {
         return result;
     }
 
+    public static String SimplifyPath(String path) {
+
+        StringBuilder sb = new StringBuilder();
+        Stack<String> stack = new Stack<>();
+
+        String route[] = path.split("/");
+
+        for (String part : route) {
+            if (part.equals(".") || part.equals(""))
+                continue;
+
+            else if (part.equals("..")) {
+                if (!stack.isEmpty()) {
+                    stack.pop();
+                }
+            }
+
+            else {
+                stack.push(part);
+            }
+        }
+
+        for (String dir : stack) {
+            sb.append("/").append(dir);
+        }
+
+        return sb.length() > 0 ? sb.toString() : "/";
+    }
+
     public static void main(String[] args) {
 
         // int nums[] = { 3, 4, 2, 5, 7, 4, 8, 4, 2 };
@@ -180,6 +209,10 @@ public class stacks {
         // int[] result = DailyTemperatutres(nums);
         // System.out.println(Arrays.toString(result));
 
+        // String path =
+        // "/home/./user/docs/../projects/alpha/./../beta/../gamma/./delta/../../x/y/../z/../../final/";
+        // String result = SimplifyPath(path);
+        // System.out.println(result);
     }
 
 }
