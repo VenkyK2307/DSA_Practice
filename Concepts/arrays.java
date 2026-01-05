@@ -1632,6 +1632,8 @@ public class arrays {
             count++;
         }
         return count;
+
+        // int Length = String.value(num).length;
     }
 
     public static List<Integer> WierdNum(int nums[], int k) {
@@ -2315,6 +2317,209 @@ public class arrays {
 
     }
 
+    public static int MaximumUniqueSubarray(int[] nums) {
+
+        int maxsum = 0;
+        int currsum = 0;
+        int start = 0;
+        HashSet<Integer> set = new HashSet<>();
+
+        for (int end = 0; end < nums.length; end++) {
+
+            while (set.contains(nums[end])) {
+                set.remove(nums[start]);
+                currsum -= nums[start];
+                start++;
+            }
+
+            set.add(nums[end]);
+            currsum += nums[end];
+            maxsum = Math.max(maxsum, currsum);
+
+        }
+        return maxsum;
+    }
+
+    public static int MaximumUniqueSubarraywithoutduplicates(int nums[]) {
+
+        boolean positive = false;
+        int max = 0;
+        int bestsingle = Integer.MIN_VALUE;
+
+        HashSet<Integer> set = new HashSet<>();
+
+        for (int x : nums) {
+
+            bestsingle = Math.max(bestsingle, x);
+
+            if (x > 0 && set.add(x)) {
+                max += x;
+                positive = true;
+            }
+
+        }
+        return positive ? max : bestsingle;
+    }
+
+    public static int MaximalSquare(char[][] matrix) {
+
+        int row = matrix.length;
+        int col = matrix[0].length;
+        int max = 0;
+        int dp[][] = new int[row + 1][col + 1];
+
+        for (int i = 1; i <= row; i++) {
+            for (int j = 1; j <= col; j++) {
+                if (matrix[i - 1][j - 1] == '1') {
+                    dp[i][j] = 1 + Math.min(Math.min(dp[i - 1][j], dp[i][j - 1]), dp[i - 1][j - 1]);
+                }
+                max = Math.max(max, dp[i][j]);
+            }
+        }
+
+        for (int[] rows : dp) {
+            for (int num : rows) {
+                System.out.print(num + " ");
+            }
+            System.out.println();
+
+        }
+        return max * max;
+    }
+
+    public static int HillsAndValley(int nums[]) {
+        int count = 0;
+
+        for (int i = 1; i < nums.length - 1; i++) {
+            int prev = i - 1;
+            int next = i + 1;
+
+            while (prev >= 0 && nums[i] == nums[prev])
+                prev--;
+            while (next < nums.length && nums[i] == nums[next])
+                next++;
+
+            if (prev >= 0 && next < nums.length) {
+                if (nums[i] > nums[prev] && nums[i] > nums[next] || nums[i] < nums[next] && nums[i] < nums[prev]) {
+                    count++;
+                }
+            }
+        }
+        return count;
+
+    }
+
+    public static int PassThePillow(int n, int time) {
+
+        int cycle = time / (n - 1);
+        int rem = time % (n - 1);
+
+        return cycle % 2 == 0 ? 1 + rem : n - rem;
+
+    }
+
+    public static List<List<Integer>> PascalTriangle(int n) {
+
+        int dp[][] = new int[n][n];
+        List<List<Integer>> map = new ArrayList<>();
+
+        for (int i = 0; i < n; i++) {
+            List<Integer> row = new ArrayList<>();
+
+            for (int j = 0; j <= i; j++) {
+
+                if (j == 0 || i == j) {
+                    dp[i][j] = 1;
+                } else {
+                    dp[i][j] = dp[i - 1][j - 1] + dp[i - 1][j];
+                }
+
+                row.add(dp[i][j]);
+
+            }
+            map.add(row);
+        }
+
+        return map;
+    }
+
+    public static int LongestsubarrayWithAtmost2DistintElements(int nums[]) {
+
+        int left = 0;
+        int max = 0;
+
+        HashMap<Integer, Integer> map = new HashMap<>();
+
+        for (int right = 0; right < nums.length; right++) {
+            map.put(nums[right], map.getOrDefault(nums[right], 0) + 1);
+
+            while (map.size() > 2) {
+
+                map.put(nums[left], map.get(nums[left]) - 1);
+
+                if (map.get(nums[left]) == 0) {
+                    map.remove(nums[left]);
+                }
+                left++;
+            }
+
+            max = Math.max(max, right - left + 1);
+        }
+
+        return max;
+
+    }
+
+    public static int NoofCoPrimes(int n) {
+
+        int count = 0;
+
+        for (int i = 1; i < n; i++) {
+            for (int j = i + 1; j <= n; j++) {
+
+                if (gcd(i, j) == 1) {
+                    System.out.print("(" + i + "," + j + ")");
+                    count++;
+                }
+
+            }
+        }
+        return count;
+    }
+
+    // HELPER
+    public static int gcd(int a, int b) {
+
+        if (b == 0)
+            return a;
+        return gcd(b, a % b);
+
+    }
+
+    public static String PermutiaonSequence(int n, int k) {
+
+        int fact = 1;
+        ArrayList<Integer> list = new ArrayList<>();
+
+        for (int i = 1; i <= n; i++) {
+            fact = fact * i;
+            list.add(i);
+        }
+        k--;
+        StringBuilder sb = new StringBuilder();
+
+        for (int i = n; i >= 1; i--) {
+            fact = fact / i;
+            int idx = k / fact;
+            sb.append(list.get(idx));
+            list.remove(idx);
+            k = k % fact;// To move into inner pages
+
+        }
+
+        return sb.toString();
+    }
+
     public static void main(String[] args) {
 
         // int nums[] = { 1,2,3,4,5,6,7 };
@@ -2686,5 +2891,41 @@ public class arrays {
         // int k = 1;
         // System.out.println(NoofSubarraysumequaltoK(nums, k));
 
+        // int nums[] = { 4, 2, 4, 5, 6 };
+        // System.out.println(MaximumUniqueSubarray(nums));
+
+        // int nums[] = { 1, 2, 3, 4, 5 };
+        // System.out.println(MaximumUniqueSubarraywithoutduplicates(nums));
+
+        // char matrix[][] = { { '0', '1', '1', '0', '1' },
+        // { '1', '1', '1', '1', '0' },
+        // { '0', '1', '1', '1', '0' },
+        // { '1', '1', '1', '1', '0' },
+        // { '1', '1', '1', '1', '1' } };
+        // System.out.println(MaximalSquare(matrix));
+
+        // int nums[] = { 2, 4, 1, 1, 6, 5 };
+        // System.out.println(HillsAndValley(nums));
+
+        // int time = 10;
+        // int n = 4;
+        // System.out.println(PassThePillow(n, time));
+
+        // int n = 10;
+        // List<List<Integer>> ans = PascalTriangle(n);
+        // System.out.println(ans);
+
+        // int nums[] = { 1, 2, 3, 2, 2, 2 };
+        // System.out.println(LongestsubarrayWithAtmost2DistintElements(nums));
+
+        // int n = 10;
+        // int result = NoofCoPrimes(n);
+        // System.out.println(result);
+
+        // int n = 4;
+        // int k = 10;
+        // System.out.println(PermutiaonSequence(n, k));
+
     }
+
 }

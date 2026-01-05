@@ -1,3 +1,4 @@
+import java.util.HashSet;
 
 public class bitman {
 
@@ -178,6 +179,78 @@ public class bitman {
         return result;
     }
 
+    static int count = 0;
+    static int max = 0;
+
+    public static int FindMaximumXORSubarrays(int nums[]) {
+
+        for (int num : nums) {
+            max = max | num;
+        }
+
+        backtrackXOR(nums, 0, 0);
+        return count;
+    }
+
+    // Helper -- XOR Subarray
+    public static void backtrackXOR(int nums[], int idx, int curr) {
+        if (nums.length == idx) {
+            if (max == curr) {
+                count++;
+            }
+            return;
+        }
+
+        backtrackXOR(nums, idx + 1, curr);
+        backtrackXOR(nums, idx + 1, curr | nums[idx]);
+    }
+
+    public static int LongestLengthbitwiseAND(int nums[]) {
+
+        int maxval = 0;
+
+        for (int num : nums) {
+            maxval = Math.max(maxval, num);
+        }
+
+        int count = 0;
+        int length = 0;
+
+        for (int num : nums) {
+            if (maxval == num) {
+                count++;
+                length = Math.max(count, length);
+            } else {
+                count = 0;
+            }
+
+        }
+
+        return length;
+
+    }
+
+    public static int BitwiseORs(int nums[]) {
+
+        HashSet<Integer> res = new HashSet<>();
+        HashSet<Integer> prev = new HashSet<>();
+
+        for (int num : nums) {
+            HashSet<Integer> curr = new HashSet<>();
+            curr.add(num);
+
+            for (int p : prev) {
+                curr.add(num | p);
+                // For all the combinatios
+            }
+
+            res.addAll(curr);
+            prev = curr;
+        }
+
+        return res.size();
+    }
+
     public static void main(String[] args) {
 
         // Operations(5, 6);
@@ -228,6 +301,15 @@ public class bitman {
 
         // int nums2[] = { 1, 1, 1, 6, 5, 5, 5, 4, 4, 4 };
         // System.out.println(FindUniqueNumber(nums2));
+
+        // int nums[] = { 2, 2, 2 };
+        // System.out.println(FindMaximumXORSubarrays(nums));
+
+        // int nums[] = { 1, 2, 3, 3, 2, 2 };
+        // System.out.println(LongestLengthbitwiseAND(nums));
+
+        // int nums[] = { 1, 2, 4 };
+        // System.out.println(BitwiseORs(nums));
     }
 
 }

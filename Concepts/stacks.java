@@ -185,6 +185,31 @@ public class stacks {
         return sb.length() > 0 ? sb.toString() : "/";
     }
 
+    public static int LargestRectangleInHistogram(int nums[]) {
+
+        Stack<Integer> stack = new Stack<>();
+
+        int area = 0;
+        int maxarea = 0;
+
+        for (int i = 0; i <= nums.length; i++) {
+
+            int curr = (i == nums.length) ? 0 : nums[i];
+
+            while (!stack.isEmpty() && curr < nums[stack.peek()]) {
+
+                int height = nums[stack.pop()];
+                int width = stack.isEmpty() ? i : i - stack.peek() - 1;
+                area = height * width;
+
+                maxarea = Math.max(area, maxarea);
+            }
+            stack.push(i);
+        }
+        return maxarea;
+
+    }
+
     public static void main(String[] args) {
 
         // int nums[] = { 3, 4, 2, 5, 7, 4, 8, 4, 2 };
@@ -213,6 +238,9 @@ public class stacks {
         // "/home/./user/docs/../projects/alpha/./../beta/../gamma/./delta/../../x/y/../z/../../final/";
         // String result = SimplifyPath(path);
         // System.out.println(result);
+
+        int nums[] = { 2, 1, 5, 6, 2, 3 };
+        System.out.println(LargestRectangleInHistogram(nums));
     }
 
 }

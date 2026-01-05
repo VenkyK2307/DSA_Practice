@@ -343,6 +343,38 @@ class greedy {
         return dp[n];
     }
 
+    public static List<Integer> countPrimes(int n) {
+
+        boolean dp[] = new boolean[n];
+        List<Integer> list = new ArrayList<>();
+
+        Arrays.fill(dp, true);
+
+        dp[0] = false;
+        dp[1] = false;
+
+        for (int i = 2; i < Math.sqrt(n); i++) {
+            if (dp[i]) {
+                for (int j = i * i; j < n; j = j + i) {
+                    dp[j] = false;
+                }
+            }
+        }
+
+        int count = 0;
+        for (int i = 0; i < dp.length; i++) {
+
+            if (dp[i] == true) {
+                list.add(i);
+                count++;
+            }
+
+        }
+        System.out.println(count);
+
+        return list;
+    }
+
     public static void main(String[] args) {
 
         // int coins[] = { 5, 5, 10, 10, 20 };
@@ -405,6 +437,8 @@ class greedy {
         // int n = 1087;
         // System.out.println(PerfectSquare(n));
 
+        int n = 1000;
+        System.out.println(countPrimes(n));
     }
 
 }

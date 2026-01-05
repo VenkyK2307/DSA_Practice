@@ -533,6 +533,25 @@ class trees {
         return (left != null) ? left : right;
     }
 
+    public static TreeNode ConvertArraytoBinaryTree(int nums[]) {
+        return buildtree(nums, 0, nums.length - 1);
+    }
+
+    public static TreeNode buildtree(int nums[], int left, int right) {
+
+        if (right < left)
+            return null;
+
+        int mid = left + (right - left) / 2;
+        TreeNode node = new TreeNode(nums[mid]);
+
+        node.left = buildtree(nums, left, mid - 1);
+        node.right = buildtree(nums, mid + 1, right);
+
+        return node;
+
+    }
+
     public static void main(String[] args) {
 
         /*
@@ -634,6 +653,10 @@ class trees {
         // TreeNode q = root.left.left.left.left;
         // TreeNode res = LowestCommanAnsector(root, p, q);
         // System.out.println(res.value);
+
+        // int nums[] = { -10, -3, 0, 5, 9 };
+        // TreeNode head = ConvertArraytoBinaryTree(nums);
+        // Inorder(head);
 
     }
 

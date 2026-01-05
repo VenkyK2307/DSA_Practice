@@ -731,6 +731,101 @@ public class strings {
 
     }
 
+    public static List<Integer> AllAnagarams(String s, String p) {
+
+        List<Integer> list = new ArrayList<>();
+
+        int[] scount = new int[26];
+        int[] pcount = new int[26];
+
+        for (char c : p.toCharArray()) {
+            pcount[c - 'a']++;
+        }
+
+        int window = p.length();
+
+        for (int i = 0; i < s.length(); i++) {
+
+            scount[s.charAt(i) - 'a']++;
+
+            if (i >= window) {
+                scount[s.charAt(i - window) - 'a']--;
+            }
+
+            if (Arrays.equals(scount, pcount)) {
+                list.add(i - window + 1);
+            }
+        }
+
+        return list;
+    }
+
+    public static String AddBinary(String a, String b) {
+
+        int i = a.length() - 1;
+        int j = b.length() - 1;
+        int carry = 0;
+        StringBuilder sb = new StringBuilder();
+
+        while (i >= 0 || j >= 0 || carry > 0) {
+            int sum = carry;
+
+            if (i >= 0) {
+                sum += a.charAt(i--) - '0';
+            }
+
+            if (j >= 0) {
+                sum += b.charAt(j--) - '0';
+            }
+
+            sb.append(sum % 2);
+            carry = sum / 2;
+
+        }
+
+        return sb.reverse().toString();
+    }
+
+    public static String ConvertString(String str1) {
+
+        StringBuilder sb = new StringBuilder();
+
+        for (char ch : str1.toCharArray()) {
+            ch = Character.toLowerCase(ch);
+
+            if (Character.isLetter(ch)) {
+
+                if (IsVowel(ch)) {
+                    sb.append(nextConsonent(ch));
+                } else {
+                    sb.append(nextVowel(ch));
+                }
+            } else {
+                sb.append(ch);
+            }
+
+        }
+        return sb.toString();
+
+    }
+
+    public static Character nextConsonent(char ch) {
+        char next = (char) (ch + 1);
+        return next;
+
+    }
+
+    public static Character nextVowel(char ch) {
+        char next = (char) (ch + 1);
+        return next;
+
+    }
+
+    public static boolean IsVowel(char ch) {
+        ch = Character.toLowerCase(ch);
+        return (ch == 'a' || ch == 'e' || ch == 'i' || ch == 'o' || ch == 'u');
+    }
+
     public static void main(String[] args) {
 
         // String s = "education";
@@ -841,6 +936,19 @@ public class strings {
 
         // String s = "leeeteeecccooodeeee";
         // System.out.println(MakeStringBeautiful(s));
+
+        // String s = "cbaebabacdbca";
+        // String p = "abc";
+        // List<Integer> ans = AllAnagarams(s, p);
+        // System.out.println(ans);
+
+        // String a = "1010";
+        // String b = "1011";
+        // System.out.println(AddBinary(a, b));
+
+        String str1 = "Hello World";
+        String ans = ConvertString(str1);
+        System.out.println(ans);
 
     }
 
