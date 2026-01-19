@@ -105,10 +105,6 @@ public class placement {
 
     }
 
-    // Stocks 1
-    // Stocks 2;
-
-    // Can Jump 1
     public static boolean CanJumpI(int nums[]) {
 
         int maxreach = 0;
@@ -788,10 +784,380 @@ public class placement {
         return cnge;
     }
 
+    public static int BuyandSellStockI(int nums[]) {
+
+        int max = 0;
+        int min = nums[0];
+
+        for (int i = 1; i < nums.length; i++) {
+            // Only we can sell after buying, so find the min till there
+            min = Math.min(min, nums[i]);
+            // find the diff between the present and the min to get the max
+            max = Math.max(max, nums[i] - min);
+        }
+        return max;
+
+    }
+
+    public static int Buyandsell1(int nums[]) {
+        int sell = 0;
+        int buy = Integer.MIN_VALUE;
+
+        for (int num : nums) {
+            buy = Math.max(buy, -num);
+            sell = Math.max(sell, buy + num);
+
+        }
+        return sell;
+    }
+
+    public static int BuyandSellStock2(int nums[]) {
+
+        int max = 0;
+        for (int i = 1; i < nums.length; i++) {
+            if (nums[i] > nums[i - 1]) {
+                max += nums[i] - nums[i - 1];
+            }
+
+        }
+        return max;
+
+    }
+
+    public static int BUyandsellStocksin2Transactions(int nums[]) {
+        int buy1 = Integer.MIN_VALUE;
+        int sell1 = 0;
+        int buy2 = Integer.MIN_VALUE;
+        int sell2 = 0;
+        for (int num : nums) {
+
+            buy1 = Math.max(buy1, -num);
+            sell1 = Math.max(sell1, num + buy1);
+            buy2 = Math.max(buy2, sell1 - num);
+            sell2 = Math.max(sell2, buy2 + num);
+
+        }
+        return sell2;
+    }
+
+    public static int BuyandSellinKTransactions(int nums[], int k) {
+
+        int n = nums.length;
+        int max = 0;
+
+        if (k >= n / 2) {
+            for (int i = 1; i < nums.length; i++) {
+                if (nums[i] > nums[i - 1]) {
+                    max += nums[i] - nums[i - 1];
+                }
+
+            }
+            return max;
+
+        }
+
+        int[] buy = new int[k + 1];
+        int[] sell = new int[k + 1];
+        Arrays.fill(buy, Integer.MIN_VALUE);
+
+        for (int num : nums) {
+            for (int i = 1; i <= k; i++) {
+                buy[i] = Math.max(buy[i], sell[i - 1] - num);
+                sell[i] = Math.max(sell[i], buy[i] + num);
+            }
+
+        }
+
+        return sell[k];
+
+    }
+
+    public static void SetMatrixToZeros(int nums[][]) {
+
+        HashSet<Integer> listi = new HashSet<>();
+        HashSet<Integer> listj = new HashSet<>();
+        for (int i = 0; i < nums[0].length; i++) {
+            for (int j = 0; j < nums.length; j++) {
+                if (nums[i][j] == 0) {
+                    listi.add(i);
+                    listj.add(j);
+                }
+            }
+
+        }
+
+        for (int i = 0; i < nums.length; i++) {
+            for (int j = 0; j < nums.length; j++) {
+                if (listi.contains(i) || listj.contains(j)) {
+                    nums[i][j] = 0;
+                }
+            }
+        }
+
+        for (int num[] : nums) {
+            for (int ans : num) {
+                System.out.print(ans + " ");
+            }
+            System.out.println();
+        }
+    }
+
+    // Celebrity Probalm
+    // CoolDown
+    // Fees Stocks
     // Largest Rectangle
-    /**
-     * @param args
-     */
+    // Valid Peranthesis
+
+    public static List<Integer> IndianCoins(int amount) {
+
+        int[] coins = { 1, 2, 5, 10, 20, 50, 100, 200, 500, 1000, 2000 };
+        List<Integer> list = new ArrayList<>();
+        int count = 0;
+
+        for (int i = coins.length - 1; i >= 0; i--) {
+            while (amount >= coins[i]) {
+                list.add(coins[i]);
+                amount -= coins[i];
+                count++;
+            }
+        }
+        System.out.println("Minimum no. of Demominations : " + count);
+
+        return list;
+
+    }
+
+    public static int CoinchangeMinimumCoins(int num, int coins[]) {
+
+        int dp[] = new int[num + 1];
+        Arrays.fill(dp, num + 1);
+
+        dp[0] = 0;
+
+        for (int i = 1; i <= num; i++) {
+            // We have to fill all the amount with the min coins required;
+            for (int coin : coins) {
+                // We have to check with all the possible coins also
+                if (coin <= i) {
+                    // only if im able to make, I can't make a sum of 5 with 7 rupees coin;
+                    dp[i] = Math.min(dp[i], dp[i - coin] + 1);
+                    // Logic : we already have min required coins at i-coin add 1 coin to that
+                }
+            }
+
+        }
+
+        for (int number : dp) {
+
+            if (number == num + 1) {
+                System.out.print(-1 + " ");
+            } else {
+                System.out.print(number + " ");
+
+            }
+
+        }
+        System.out.println();
+        return dp[num] > num ? -1 : dp[num];
+
+    }
+
+    public static int CoinchangeWays(int num, int coins[]) {
+
+        int dp[] = new int[num + 1];
+        dp[0] = 1;
+
+        for (int coin : coins) {
+            // we have to check the coins to make sure that it cant be repeated ; it comes
+            // in ascending order
+            for (int i = coin; i <= num; i++) {
+                // we have to check till the number
+                dp[i] += dp[i - coin];
+                // filling like the Version 1; it will check in how many ways dp[i-coin] will
+                // check
+            }
+        }
+        for (int number : dp) {
+            System.out.print(number + " ");
+        }
+        System.out.println();
+        return dp[num];
+
+    }
+
+    public static boolean EvenOrOdd(int num) {
+        return num % 2 == 0 ? true : false;
+    }
+
+    // Astroid Collision
+
+    // helper
+
+    public static void Combinations(String str, int index, String curr) {
+
+        if (str.length() == index) {
+            System.out.print(curr + " ");
+            return;
+        }
+
+        // Its Either taking that particular character or not taking it
+        Combinations(str, index + 1, curr + str.charAt(index));
+        Combinations(str, index + 1, curr);
+
+    }
+
+    public static List<String> SubStrings(String str) {
+        List<String> list = new ArrayList<>();
+        int Substrcount = 0;
+        System.out.println();
+
+        for (int i = 0; i <= str.length(); i++) {
+            for (int j = i + 1; j <= str.length(); j++) {
+                list.add(str.substring(i, j));
+                Substrcount++;
+            }
+        }
+        System.out.println(Substrcount);
+        return list;
+    }
+
+    public static void Permutations(char[] arr, int index) {
+
+        if (arr.length - 1 == index) {
+            System.out.print(String.valueOf(arr) + " ");
+            return;
+        }
+
+        for (int i = index; i < arr.length; i++) {
+            swap(arr, index, i);
+            Permutations(arr, index + 1);
+            swap(arr, index, i);
+
+        }
+
+    }
+
+    // Helper
+    public static void swap(char[] arr, int i, int j) {
+        char temp = arr[i];
+        arr[i] = arr[j];
+        arr[j] = temp;
+    }
+
+    public static List<List<Integer>> PrintSubarrays(int nums[]) {
+
+        List<List<Integer>> map = new ArrayList<>();
+
+        for (int i = 0; i < nums.length; i++) {
+
+            for (int j = i; j < nums.length; j++) {
+                List<Integer> list = new ArrayList<>();
+
+                for (int k = i; k <= j; k++) {
+                    list.add(nums[k]);
+
+                }
+                map.add(list);
+
+            }
+
+        }
+        return map;
+
+    }
+
+    public static int subarraywithsumk(int nums[], int k) {
+
+        HashMap<Integer, Integer> map = new HashMap<>();
+        map.put(0, 1);
+        int sum = 0;
+        int count = 0;
+
+        for (int i = 0; i < nums.length; i++) {
+
+            sum += nums[i];
+
+            // Finding the diff between the runnig total and K
+            int target = sum - k;
+            // Looking for extra sum to drop
+            // With that gap we'll find the no. of possibilities;
+            if (map.containsKey(target)) {
+                count += map.get(target);
+            }
+            map.put(sum, map.getOrDefault(sum, 0) + 1);
+
+        }
+
+        return count;
+    }
+
+    public static int BruteSubarraySumIsK(int nums[], int k) {
+
+        int count = 0;
+        for (int i = 0; i < nums.length; i++) {
+
+            int sum = 0;
+            for (int j = i; j < nums.length; j++) {
+                sum += nums[j];
+
+                if (sum == k) {
+                    count++;
+                }
+
+            }
+        }
+        return count;
+    }
+
+    public static int[][] AddTwoMatrices(int nums1[][], int nums2[][]) {
+
+        int row = nums1.length;
+        int col = nums1[0].length;
+
+        int[][] matrix = new int[row][col];
+
+        for (int i = 0; i < row; i++) {
+            for (int j = 0; j < col; j++) {
+                matrix[i][j] = nums1[i][j] + nums2[i][j];
+            }
+
+        }
+
+        return matrix;
+
+    }
+
+    public static void DNFAlgo(int nums[]) {
+        int low = 0;
+        int mid = 0;
+        int high = nums.length - 1;
+
+        while (mid <= high) {
+            if (nums[mid] == 0) {
+                swapnums(nums, low, mid);
+                low++;
+                mid++;
+            } else if (nums[mid] == 1) {
+                mid++;
+            } else {
+                swapnums(nums, mid, high);
+                high--;
+
+            }
+        }
+
+        for (int num : nums) {
+            System.out.print(num + " ");
+        }
+
+    }
+
+    public static void swapnums(int nums[], int i, int j) {
+        int temp = nums[i];
+        nums[i] = nums[j];
+        nums[j] = temp;
+    }
+
     public static void main(String[] args) {
 
         // int nums1[] = { 11, 4, 3, 4, 5 };
@@ -925,6 +1291,59 @@ public class placement {
         // int nums[] = { 2, 1, 5, 6, 2, 3 };
         // int[] ans = CircularNextGreaterElement(nums);
         // System.out.println(Arrays.toString(ans));
+
+        // int nums[] = { 1, 2, 3, 2, 4, 7, 3, 8 };
+        // int ans1 = BuyandSellStockI(nums);
+        // int ans11 = Buyandsell1(nums);
+        // int ans2 = BuyandSellStock2(nums);
+        // int ans3 = BUyandsellStocksin2Transactions(nums);
+        // int k = 3;
+        // int ans4 = BuyandSellinKTransactions(nums, k);
+
+        // System.out.println("One Transaction : " + ans1);
+        // System.out.println("Other Version : " + ans11);
+        // System.out.println("Unlimited Transactions : " + ans2);
+        // System.out.println("B&SAtmost2Transactions : " + ans3);
+        // System.out.println("Buy&SellInKTransactions : " + ans4);
+
+        // int nums[][] = { { 1, 2, 3 }, { 4, 0, 6 }, { 7, 8, 9 } };
+        // SetMatrixToZeros(nums);
+
+        // String str = "{{[()]}}";
+        // System.out.println(ValidParanthesis(str));
+
+        // int num = 3888;
+        // System.out.println(IndianCoins(num));
+
+        // int num = 10;
+        // int[] coins = { 1, 2, 5 };
+        // System.out.println("Minimum Demominations : " + CoinchangeMinimumCoins(num,
+        // coins));
+        // System.out.println("Coin Change Ways : " + CoinchangeWays(num, coins));
+
+        // int num = 11;
+        // for (int i = 0; i < num; i++) {
+        // System.out.println(EvenOrOdd(i));
+        // }
+
+        // String str = "ABCD";
+        // Combinations(str, 0, "");
+        // // System.out.println(SubStrings(str));
+        // System.out.println();
+        // Permutations(str.toCharArray(), 0);
+
+        // int nums[] = { 2, 4, 6, 2, 8, 2 };
+        // System.out.println(PrintSubarrays(nums));
+        // System.out.println(subarraywithsumk(nums, 4));
+        // System.out.println(BruteSubarraySumIsK(nums, 4));
+
+        // int nums1[][] = { { 1, 2, 3 }, { 4, 5, 6 }, { 7, 8, 9 } };
+        // int nums2[][] = { { 1, 2, 3 }, { 4, 5, 6 }, { 7, 8, 9 } };
+        // int ans[][] = AddTwoMatrices(nums1, nums2);
+        // System.out.println(Arrays.deepToString(ans));
+
+        // int nums[] = { 0, 1, 2, 0, 1, 2, 0, 2, 1 };
+        // DNFAlgo(nums);
 
     }
 
