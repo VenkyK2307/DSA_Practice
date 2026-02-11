@@ -23,6 +23,19 @@ class TreeNode {
     }
 }
 
+class vertex {
+    int src;
+    int dest;
+    int wt;
+
+    vertex(int src, int dest, int wt) {
+        this.src = src;
+        this.dest = dest;
+        this.wt = wt;
+
+    }
+}
+
 class SDOT {
 
     // DAY - 1
@@ -344,7 +357,47 @@ class SDOT {
 
     // DAY - 4
 
-    // BASIC cALCULATOR
+    public static void BasicCalculator(String str) {
+
+        int sum = 0;
+        int num = 0;
+        int sign = 1;
+
+        Stack<Integer> stack = new Stack<>();
+
+        for (int i = 0; i < str.length(); i++) {
+            char curr = str.charAt(i);
+
+            if (Character.isDigit(curr)) {
+
+            }
+
+            else if (curr == '+') {
+                sum += sign * num;
+                num = 0;
+                sign = 1;
+            }
+
+            else if (curr == '-') {
+                sum += sign * num;
+                num = 0;
+                sign = -1;
+            }
+
+            else if (curr == '(') {
+                stack.push(sign);
+                stack.push(sum);
+                sign = 1;
+                num = 0;
+
+            }
+
+            else if (curr == ')') {
+
+            }
+        }
+        return;
+    }
 
     public static int PostFixEval(String str) {
 
@@ -452,6 +505,388 @@ class SDOT {
 
     }
 
+    // Stck using Queue
+    // Queue using STack
+
+    // DAY-5.1
+
+    public static int LongestPosibleValidPerantheses(String str) {
+
+        Stack<Integer> stack = new Stack<>();
+        int maxlen = 0;
+        stack.push(-1);// Acts as the First Boundary if a pair is valid
+
+        for (int i = 0; i < str.length(); i++) {
+            char curr = str.charAt(i);
+
+            if (curr == '(') {
+                stack.push(i);
+            } else {
+                stack.pop();
+
+                if (stack.isEmpty()) {// If my stack is empty i will push my closing index to act as wall
+                    stack.push(i);
+                }
+
+                else {
+                    maxlen = Math.max(maxlen, i - stack.peek());// Updating the maxlen when sommething in the stack
+                }
+            }
+
+            maxlen = Math.max(maxlen, i - stack.peek());
+        }
+
+        return maxlen;
+
+    }
+
+    public static int FixingUnbalencedPeranthesis(String str) {
+
+        Stack<Integer> stack = new Stack<>();
+
+        for (int i = 0; i < str.length(); i++) {
+            char curr = str.charAt(i);
+
+            if (curr == '(') {
+                stack.push(i);
+            } else {
+
+                if (!stack.isEmpty() && str.charAt(stack.peek()) == '(') {
+                    // Check if the Stack contains the opening Bracket
+                    stack.pop();
+                }
+
+                else {
+                    stack.push(i);
+                }
+
+            }
+        }
+        return stack.size();
+    }
+
+    public static void BInartycodeGeneration(int n) {
+
+        Queue<String> q = new LinkedList<>();
+        q.offer("1");
+
+        for (int i = 0; i < n; i++) {
+            String curr = q.poll();
+            System.out.print(curr + " ");
+            if (i < n - 1) {
+                System.out.print(" , ");
+            }
+
+            q.offer(curr + "0");
+            q.offer(curr + "1");
+
+        }
+
+    }
+
+    public static boolean ValidPerantheses(String str) {
+        Stack<Character> stack = new Stack<>();
+
+        for (int i = 0; i < str.length(); i++) {
+            char curr = str.charAt(i);
+
+            if (curr == '(' || curr == '{' || curr == '[') {
+                stack.push(curr);
+            } else {
+                char top = stack.peek();
+
+                if ((curr == ')' && top == '(') ||
+                        (curr == '}' && top == '{') ||
+                        (curr == ']' && top == '[')) {
+                    stack.pop();
+                } else {
+                    return false;
+                }
+
+            }
+
+        }
+
+        return true;
+    }
+
+    // public static boolean HaveUnnessecaryPerantheses(String str) {
+
+    // }
+
+    // DAY - 5.2
+
+    // Permutation
+
+    public static int TrappingRainWater(int heights[]) {
+        int rightmax = 0;
+        int leftmax = 0;
+        int left = 0;
+        int right = heights.length - 1;
+        int water = 0;
+
+        while (left < right) {
+            if (heights[left] <= heights[right]) {// Whichever is smaller we go insie
+                if (heights[left] > leftmax) {// if my boundery is lesser update boundary
+                    leftmax = heights[left];
+                } else {
+                    water += leftmax - heights[left];// if my boundary is bigger update boundary - curr;
+                }
+
+                left++;
+            } else {
+                if (heights[right] > rightmax) {
+                    rightmax = heights[right];
+                } else {
+                    water += rightmax - heights[right];
+                }
+
+                right--;
+            }
+
+        }
+        return water;
+    }
+
+    // DAY 6.1
+    public static List<String> GeneratePerantheis(int n) {
+        List<String> result = new ArrayList<>();
+        backTrack(result, "", n, 0, 0);
+
+        return result;
+    }
+
+    // Helper -- Generate Peranthesis
+    public static void backTrack(List<String> result, String curr, int n, int open, int close) {
+
+        if (2 * n == curr.length()) {
+            result.add(curr);
+            return;
+        }
+
+        if (open < n) {
+            backTrack(result, curr + "(", n, open + 1, close);
+        }
+
+        if (close < open) {
+            backTrack(result, curr + ")", n, open, close + 1);
+        }
+    }
+
+    public static List<Integer> SpiralMatrix(int[][] matrix) {
+
+        int top = 0;
+        int left = 0;
+        int bottom = matrix.length - 1;
+        int right = matrix[0].length - 1;
+        List<Integer> list = new ArrayList<>();
+
+        while (left <= right && top <= bottom) {
+
+            for (int i = left; i <= right; i++) {
+                list.add(matrix[top][i]);
+            }
+
+            top++;
+            for (int i = top; i <= bottom; i++) {
+                list.add(matrix[i][right]);
+            }
+            right--;
+
+            if (top <= bottom) {
+                for (int i = right; i >= left; i--) {
+                    list.add(matrix[bottom][i]);
+                }
+                bottom--;
+            }
+
+            if (left <= right) {
+
+                for (int i = bottom; i >= top; i--) {
+                    list.add(matrix[i][left]);
+                }
+                left++;
+            }
+
+        }
+
+        return list;
+
+    }
+
+    public static String keypad[] = { "", "", "abc", "def", "ghi", "jkl", "mno", "pqrs", "tuv", "wxyz" };
+
+    public static List<String> LetterCombination(String input) {
+
+        ArrayList<String> list = new ArrayList<>();
+        HelperLetterCombination(list, input, "", 0);
+        return list;
+
+    }
+
+    public static void HelperLetterCombination(ArrayList<String> list, String input, String curr, int index) {
+        if (index == input.length()) {
+            list.add(curr);
+            return;
+        }
+
+        String letters = keypad[input.charAt(index) - '0'];
+
+        for (char c : letters.toCharArray()) {
+            HelperLetterCombination(list, input, curr + c, index + 1);
+
+        }
+
+    }
+
+    // DAY -6.2
+
+    public static void BUildGraph(ArrayList<vertex> graph[]) {
+        for (int i = 0; i < graph.length; i++) {
+            graph[i] = new ArrayList<vertex>();
+        }
+
+        graph[0].add(new vertex(0, 1, 2));
+        graph[0].add(new vertex(0, 2, 4));
+        graph[1].add(new vertex(1, 0, 2));
+        graph[1].add(new vertex(1, 3, 3));
+        graph[2].add(new vertex(2, 0, 4));
+        graph[3].add(new vertex(3, 1, 3));
+    }
+
+    public static void DFS(ArrayList<vertex> graph[], int curr, boolean[] visited) {
+        System.out.print(curr + " ");
+        visited[curr] = true;
+
+        for (int i = 0; i < graph[curr].size(); i++) {
+            vertex v = graph[curr].get(i);
+
+            if (!visited[v.dest]) {
+                DFS(graph, v.dest, visited);
+            }
+        }
+
+    }
+
+    public static int IslandCount(char[][] grid) {
+
+        int count = 0;
+        for (int i = 0; i < grid.length; i++) {
+            for (int j = 0; j < grid[0].length; j++) {
+
+                if (grid[i][j] == '1') {
+                    count++;
+                    IslandDfs(grid, i, j);
+
+                }
+
+            }
+        }
+        return count;
+    }
+
+    public static void IslandDfs(char[][] grid, int i, int j) {
+
+        if (i < 0 || j < 0 || j >= grid[0].length || i >= grid.length || grid[i][j] == '0') {
+            return;
+        }
+
+        grid[i][j] = '0';
+
+        IslandDfs(grid, i + 1, j);
+        IslandDfs(grid, i - 1, j);
+        IslandDfs(grid, i, j - 1);
+        IslandDfs(grid, i, j + 1);
+
+    }
+
+    // DAY 7
+
+    // houseRobber
+    // WildcardMAtching
+    // LengthofIncresingSubsequence
+    // MInimumnoofdeletions
+
+    // DAY - 8
+
+    public static int PrimsAlgo(ArrayList<vertex> graph[], int V) {
+
+        PriorityQueue<vertex> pq = new PriorityQueue<>((a, b) -> a.wt - b.wt);
+        pq.offer(new vertex(0, 0, 0));
+
+        boolean visited[] = new boolean[V];
+        int total = 0;
+
+        while (!pq.isEmpty()) {
+            vertex curr = pq.poll();
+            int u = curr.dest;
+
+            if (visited[u]) {
+                continue;
+            }
+
+            visited[u] = true;
+            total += curr.wt;
+
+            for (int i = 0; i < graph[curr.dest].size(); i++) {
+                vertex e = graph[curr.dest].get(i);
+
+                if (!visited[e.dest]) {
+                    pq.offer(new vertex(e.src, e.dest, e.wt));
+                }
+
+            }
+
+        }
+        return total;
+
+    }
+
+    public static boolean CourseSchedule(int num, int[][] prerequsites) {
+
+        List<List<Integer>> map = new ArrayList<>();
+        int[] indegree = new int[num];
+
+        for (int i = 0; i < num; i++) {
+            map.add(new ArrayList<>());
+        }
+
+        for (int[] arr : prerequsites) {
+            int course = arr[0];
+            int prereq = arr[1];
+            map.get(prereq).add(course);
+            indegree[course]++;
+
+        }
+
+        ArrayDeque<Integer> q = new ArrayDeque<>();
+
+        for (int i = 0; i < indegree.length; i++) {
+            if (indegree[i] == 0) {
+                q.offer(i);
+            }
+        }
+
+        // Starts with a course which has no Prerequsite;
+        int index = 0;
+
+        while (!q.isEmpty()) {
+
+            int curr = q.poll();
+            index++;
+
+            for (int neighbour : map.get(curr)) {
+                indegree[neighbour]--;
+
+                if (indegree[neighbour] == 0) {
+                    q.offer(neighbour);
+                }
+            }
+        }
+
+        return num == index;
+    }
+
     public static void main(String[] args) {
 
         // Linked List 1
@@ -508,6 +943,60 @@ class SDOT {
         // System.out.println(ans);
 
         // System.out.println(infixToPostfix("A + (B * C)"));
+
+        // String str = ")()()(";
+        // int ans = LongestPosibleValidPerantheses(str);
+        // System.out.println(ans);
+
+        // String str = ")()())";
+        // System.out.println(FixingUnbalencedPeranthesis(str));
+
+        // int n = 10;
+        // BInartycodeGeneration(n);
+
+        // String str = "({{{}}})[]";
+        // System.out.println(ValidPerantheses(str));
+
+        // int heights[] = { 4, 0, 2, 3, 5, 8, 6, 7, 3 };
+        // System.out.println(TrappingRainWater(heights));
+
+        // List<String> ans = GeneratePerantheis(4);
+        // System.out.println(ans);
+
+        // int matrix[][] = { { 1, 2, 3, 4 }, { 5, 6, 7, 8 }, { 9, 10, 11, 12 }, { 13,
+        // 14, 15, 16 } };
+        // List<Integer> ans = SpiralMatrix(matrix);
+        // System.out.println(ans);
+
+        // int V = 4;
+        // ArrayList<vertex> graph[] = new ArrayList[V];
+        // BUildGraph(graph);
+        // boolean visited[] = new boolean[V];
+        // DFS(graph, 2, visited);
+
+        // char[][] grid = {
+        // { '1', '1', '0', '0', '0' },
+        // { '1', '1', '0', '0', '0' },
+        // { '0', '0', '1', '0', '0' },
+        // { '0', '0', '0', '1', '1' }
+        // };
+
+        // int ans = IslandCount(grid);
+        // System.out.println(ans);
+
+        // List<String> ans = LetterCombination("235");
+        // System.out.println(ans);
+
+        // int V = 5;
+        // ArrayList<vertex> graph[] = new ArrayList[V];
+        // BUildGraph(graph);
+        // int ans = PrimsAlgo(graph, V);
+        // System.out.println("Minimum Distance : " + ans);
+
+        int num = 7;
+        int[][] prerequsites = { { 1, 0 }, { 2, 0 }, { 3, 1 }, { 4, 2 }, { 5, 3 }, { 5, 4 }, { 6, 5 } };
+        boolean ans = CourseSchedule(num, prerequsites);
+        System.out.println(ans);
 
     }
 

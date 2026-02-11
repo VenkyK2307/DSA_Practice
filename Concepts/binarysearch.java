@@ -255,9 +255,9 @@ public class binarysearch {
         // int k = 2;
         // System.out.println(AggressiveCows(nums, k));
 
-        // int nums[] = { 1, 2, 3, 4, 5, 6, 7 };
-        // int k = 4;
-        // int x = 3;
+        // int nums[] = { 0, 1, 2, 3, 4, 6, 7 };
+        // int k = 3;
+        // int x = 5;
         // System.out.println(KNearestElements(nums, k, x));
 
         // int piles[] = { 3, 6, 7, 11 };
